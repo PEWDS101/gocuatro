@@ -1,0 +1,5 @@
+# Build tooling and source screenshots — kept locally, never uploaded.
+# work/_src holds fetch_media.py, vid.py, CREDITS.md and the full-size PNG
+# screenshots used to make the homepage preview cards. None of it is needed
+# to serve the site, and it is ~4.5 MB.
+work/_src/

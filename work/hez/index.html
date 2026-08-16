@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>HÊZ — Athletic Club, Duhok</title>
+<meta name="description" content="Strength, conditioning and coached classes in Duhok. Open 05:00 to midnight." />
+<meta name="theme-color" content="#0E0E10" />
+<meta property="og:title" content="HÊZ — Athletic Club, Duhok" />
+<meta property="og:image" content="media/hero-floor.webp" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:ital,wght@0,300..800;1,400..600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+<script>document.documentElement.className='js';</script>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top">HÊZ<i></i></a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#schedule" data-i18n="nav.sched">Schedule</a>
+    <a href="#floor" data-i18n="nav.floor">The floor</a>
+    <a href="#join" data-i18n="nav.join">Membership</a>
+  </nav>
+  <div class="nav__end">
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" class="on">EN</button>
+      <button type="button" data-lang="ckb">KU</button>
+      <button type="button" data-lang="ar">AR</button>
+    </div>
+    <a class="btn btn--sm" href="#trial" data-i18n="nav.trial">Free week</a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i></button>
+  </div>
+  <div class="nav__prog" id="navprog" aria-hidden="true"></div>
+</header>
+
+<div class="sheet" id="sheet" hidden>
+  <a href="#schedule" data-i18n="nav.sched">Schedule</a>
+  <a href="#floor" data-i18n="nav.floor">The floor</a>
+  <a href="#join" data-i18n="nav.join">Membership</a>
+  <a href="#trial" data-i18n="nav.trial">Free week</a>
+</div>
+
+<main id="top">
+
+<!-- ── hero ─────────────────────────────────────────────── -->
+<section class="hero">
+  <video class="hero__v" poster="media/hero-rope-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+    <source src="media/hero-rope.mp4" type="video/mp4" />
+  </video>
+  <div class="hero__o"></div>
+
+  <div class="hero__in">
+    <h1>
+      <span class="line"><span data-i18n="hero.l1">Strength</span></span>
+      <span class="line blue"><span data-i18n="hero.l2">is a habit,</span></span>
+      <span class="line"><span data-i18n="hero.l3">not a mood.</span></span>
+    </h1>
+    <p class="hero__sub reveal" data-i18n="hero.sub">Coached classes, a full free-weight floor, and doors open from five in the morning until midnight. Duhok's serious room.</p>
+    <div class="hero__cta reveal">
+      <a class="btn" href="#trial" data-i18n="hero.cta1">Claim a free week</a>
+      <a class="btn btn--line" href="#schedule" data-i18n="hero.cta2">See the schedule</a>
+    </div>
+  </div>
+
+  <!-- the live bit -->
+  <aside class="live" id="live">
+    <div class="live__k"><i class="pulse"></i><span data-i18n="live.next">Next class</span></div>
+    <div class="live__n" id="liveName">—</div>
+    <div class="live__t" id="liveTime">--:--:--</div>
+    <div class="live__m" id="liveMeta">—</div>
+  </aside>
+</section>
+
+<!-- ── marquee ──────────────────────────────────────────── -->
+<div class="marq" aria-hidden="true"><div class="marq__r" id="marq"></div></div>
+
+<!-- ── schedule ─────────────────────────────────────────── -->
+<section class="sched" id="schedule">
+  <div class="wrap">
+    <header class="sec">
+      <p class="ey reveal" data-i18n="sched.ey">Timetable</p>
+      <h2 class="h2"><span class="line"><span data-i18n="sched.h1">Every class,</span></span><span class="line blue"><span data-i18n="sched.h2">every day.</span></span></h2>
+      <p class="lead reveal" data-i18n="sched.sub">Classes are capped at fourteen so the coach can actually see you. Book on the app or just turn up ten minutes early.</p>
+    </header>
+
+    <div class="days" id="days" role="tablist"></div>
+    <div class="slots" id="slots"></div>
+  </div>
+</section>
+
+<!-- ── floor ────────────────────────────────────────────── -->
+<section class="floor" id="floor">
+  <div class="wrap">
+    <header class="sec sec--center">
+      <p class="ey reveal" data-i18n="floor.ey">The floor</p>
+      <h2 class="h2"><span class="line blue"><span data-i18n="floor.h">Twelve hundred square metres.</span></span></h2>
+    </header>
+
+    <div class="fgrid">
+      <figure class="f1"><img src="media/floor-wide.webp" alt="The main training floor" loading="lazy" /><figcaption data-i18n="floor.c1">Main floor</figcaption></figure>
+      <figure class="f2"><img src="media/dumbbells.webp" alt="Dumbbell rack" loading="lazy" /><figcaption data-i18n="floor.c2">Free weights to 60 kg</figcaption></figure>
+      <figure class="f3"><img src="media/rowing.webp" alt="Rowing machines" loading="lazy" /><figcaption data-i18n="floor.c3">Conditioning</figcaption></figure>
+      <figure class="f4"><img src="media/athlete.webp" alt="An athlete training" loading="lazy" /><figcaption data-i18n="floor.c4">Coached lifting</figcaption></figure>
+      <figure class="f5"><img src="media/bikes.webp" alt="Studio bikes" loading="lazy" /><figcaption data-i18n="floor.c5">Cycle studio</figcaption></figure>
+    </div>
+
+    <ul class="fstats">
+      <li><b class="num" data-to="1200" data-comma>0</b><span data-i18n="floor.s1">Square metres</span></li>
+      <li><b class="num" data-to="9">0</b><span data-i18n="floor.s2">Coaches</span></li>
+      <li><b class="num" data-to="42">0</b><span data-i18n="floor.s3">Classes a week</span></li>
+      <li><b class="num" data-to="19" data-suffix="h">0</b><span data-i18n="floor.s4">Open daily</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── membership ───────────────────────────────────────── -->
+<section class="join" id="join">
+  <div class="wrap">
+    <header class="sec sec--center">
+      <p class="ey reveal" data-i18n="join.ey">Membership</p>
+      <h2 class="h2"><span class="line"><span data-i18n="join.h1">Three ways in.</span></span></h2>
+      <p class="lead reveal" data-i18n="join.sub">No joining fee, no contract, cancel whenever. Prices in Iraqi dinar per month.</p>
+    </header>
+    <div class="plans" id="plans"></div>
+  </div>
+</section>
+
+<!-- ── trial ────────────────────────────────────────────── -->
+<section class="trial" id="trial">
+  <div class="wrap trial__grid">
+    <div>
+      <p class="ey reveal" data-i18n="trial.ey">Free week</p>
+      <h2 class="h2"><span class="line"><span data-i18n="trial.h1">Seven days.</span></span><span class="line blue"><span data-i18n="trial.h2">No card needed.</span></span></h2>
+      <p class="lead reveal" data-i18n="trial.p">Full access to the floor and every class for a week. If it is not for you, walk away — we will not chase you.</p>
+      <ul class="info">
+        <li><b data-i18n="trial.i1">Open</b><span data-i18n="trial.i1v">Every day · 05:00 – 00:00</span></li>
+        <li><b data-i18n="trial.i2">Where</b><span data-i18n="trial.i2v">Malta Road, Duhok</span></li>
+        <li><b data-i18n="trial.i3">Phone</b><span dir="ltr">0750 000 0000</span></li>
+      </ul>
+    </div>
+
+    <form class="trial__form" id="trialform" novalidate>
+      <fieldset class="goal">
+        <legend data-i18n="trial.g0">What are you here for?</legend>
+        <div class="goal__row" id="goal">
+          <button type="button" class="on" data-v="strength" data-i18n="trial.g1">Strength</button>
+          <button type="button" data-v="fat" data-i18n="trial.g2">Conditioning</button>
+          <button type="button" data-v="classes" data-i18n="trial.g3">Classes</button>
+          <button type="button" data-v="sport" data-i18n="trial.g4">Sport</button>
+        </div>
+      </fieldset>
+      <div class="f2">
+        <label class="fld"><span data-i18n="trial.f1">Name</span><input name="name" required autocomplete="name" /></label>
+        <label class="fld"><span data-i18n="trial.f2">Phone</span><input name="phone" required inputmode="tel" dir="ltr" autocomplete="tel" /></label>
+      </div>
+      <label class="fld"><span data-i18n="trial.f3">Start day</span><input name="date" type="date" required /></label>
+      <button class="btn btn--full" type="submit"><span data-i18n="trial.send">Start the free week</span></button>
+      <p class="okmsg" id="okmsg" role="status" hidden data-i18n="trial.ok">Thank you — this is a demonstration site, so nothing was actually sent.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__grid">
+    <div>
+      <div class="foot__brand">HÊZ</div>
+      <p data-i18n="foot.tag">Athletic Club · Duhok, Kurdistan</p>
+    </div>
+    <ul class="foot__links">
+      <li><a href="#schedule" data-i18n="nav.sched">Schedule</a></li>
+      <li><a href="#floor" data-i18n="nav.floor">The floor</a></li>
+      <li><a href="#join" data-i18n="nav.join">Membership</a></li>
+    </ul>
+    <div class="foot__note">
+      <p data-i18n="foot.demo">Concept site — not a real gym.</p>
+      <a href="https://gocuatro.com" class="foot__by">Designed &amp; built by <b>GoCuatro</b></a>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

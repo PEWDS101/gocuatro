@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gocuatro.com/sitemap.xml

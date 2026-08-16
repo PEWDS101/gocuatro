@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>ZAGROS MOTORS — Duhok</title>
+<meta name="description" content="Inspected, papered and warrantied SUVs in Duhok. Every car comes with its own inspection sheet." />
+<meta name="theme-color" content="#08090B" />
+<meta property="og:title" content="ZAGROS MOTORS — Duhok" />
+<meta property="og:image" content="media/hero-suv.webp" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..900;1,75..125,400..700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+<script>document.documentElement.className='js';</script>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top">
+    <svg class="brand__m" viewBox="0 0 34 22" aria-hidden="true"><path d="M1 21 11 3l6 10 4-6 12 14" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linejoin="round" stroke-linecap="round"/></svg>
+    <span>ZAGROS<i>MOTORS</i></span>
+  </a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#stock" data-i18n="nav.stock">Stock</a>
+    <a href="#featured" data-i18n="nav.featured">Featured</a>
+    <a href="#why" data-i18n="nav.why">Why us</a>
+    <a href="#visit" data-i18n="nav.visit">Visit</a>
+  </nav>
+  <div class="nav__end">
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" class="on">EN</button>
+      <button type="button" data-lang="ckb">KU</button>
+      <button type="button" data-lang="ar">AR</button>
+    </div>
+    <a class="btn btn--sm" href="#drive" data-i18n="nav.drive">Test drive</a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i></button>
+  </div>
+  <div class="nav__prog" id="navprog" aria-hidden="true"></div>
+</header>
+
+<div class="sheet" id="sheet" hidden>
+  <a href="#stock" data-i18n="nav.stock">Stock</a>
+  <a href="#featured" data-i18n="nav.featured">Featured</a>
+  <a href="#why" data-i18n="nav.why">Why us</a>
+  <a href="#drive" data-i18n="nav.drive">Test drive</a>
+</div>
+
+<main id="top">
+
+<!-- ── hero ─────────────────────────────────────────────── -->
+<section class="hero">
+  <figure class="hero__bg"><img src="media/hero-suv.webp" alt="" width="1920" height="1080" fetchpriority="high" /></figure>
+  <div class="hero__veil"></div>
+
+  <div class="hero__in">
+    <p class="ey reveal"><i class="dot"></i><span data-i18n="hero.ey">Duhok · 41 cars on the floor today</span></p>
+    <h1>
+      <span class="line"><span data-i18n="hero.l1">Every car</span></span>
+      <span class="line"><span data-i18n="hero.l2">comes with its</span></span>
+      <span class="line red"><span data-i18n="hero.l3">inspection sheet.</span></span>
+    </h1>
+    <p class="hero__sub reveal" data-i18n="hero.sub">Chassis, service history, accident record and customs papers — printed, stapled and handed to you before you are asked for a single dollar.</p>
+    <div class="hero__cta reveal">
+      <a class="btn" href="#stock" data-i18n="hero.cta1">Browse the stock</a>
+      <a class="btn btn--line" href="#drive" data-i18n="hero.cta2">Book a test drive</a>
+    </div>
+  </div>
+
+  <ul class="hero__spec">
+    <li><b class="num" data-to="41">0</b><span data-i18n="hero.s1">In stock</span></li>
+    <li><b class="num" data-to="132" data-suffix="">0</b><span data-i18n="hero.s2">Point check</span></li>
+    <li><b class="num" data-to="12" data-suffix="mo">0</b><span data-i18n="hero.s3">Warranty</span></li>
+    <li><b class="num" data-to="9" data-suffix="yr">0</b><span data-i18n="hero.s4">Trading since</span></li>
+  </ul>
+</section>
+
+<!-- ── stock ────────────────────────────────────────────── -->
+<section class="stock" id="stock">
+  <div class="wrap">
+    <header class="sec">
+      <p class="ey reveal" data-i18n="stock.ey">Current stock</p>
+      <h2 class="h2"><span class="line"><span data-i18n="stock.h1">On the floor</span></span><span class="line red"><span data-i18n="stock.h2">right now.</span></span></h2>
+    </header>
+
+    <div class="fbar">
+      <div class="filters" id="filters">
+        <button class="on" data-f="all" data-i18n="stock.f1">All</button>
+        <button data-f="suv" data-i18n="stock.f2">Full-size SUV</button>
+        <button data-f="mid" data-i18n="stock.f3">Mid-size</button>
+        <button data-f="lux" data-i18n="stock.f4">Luxury</button>
+      </div>
+      <div class="sortby">
+        <label for="sort" data-i18n="stock.sort">Sort</label>
+        <select id="sort">
+          <option value="new" data-i18n="stock.s1">Newest</option>
+          <option value="low" data-i18n="stock.s2">Price low to high</option>
+          <option value="high" data-i18n="stock.s3">Price high to low</option>
+          <option value="km" data-i18n="stock.s4">Lowest km</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="cars" id="cars"></div>
+  </div>
+</section>
+
+<!-- ── featured / trim switcher ─────────────────────────── -->
+<section class="feat" id="featured">
+  <div class="wrap feat__grid">
+    <div class="feat__stage">
+      <div class="feat__imgs" id="featimgs"></div>
+      <div class="feat__swatch" id="swatch"></div>
+    </div>
+
+    <div class="feat__info">
+      <p class="ey reveal" data-i18n="feat.ey">This week's pick</p>
+      <h2 class="h2"><span class="line"><span data-i18n="feat.h1">Land Cruiser</span></span><span class="line red"><span>GX-R 2022</span></span></h2>
+      <p class="lead reveal" data-i18n="feat.p">One owner from new, serviced at the agency every 5,000 km, never off tarmac. Papers clean and in the car.</p>
+
+      <dl class="specs" id="specs"></dl>
+
+      <div class="feat__price">
+        <span data-i18n="feat.price">Asking</span>
+        <b>$<span class="num" data-to="68500" data-comma>0</span></b>
+        <em data-i18n="feat.neg">negotiable</em>
+      </div>
+      <a class="btn btn--full" href="#drive" data-i18n="feat.cta">Book this car for a drive</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── road band ────────────────────────────────────────── -->
+<section class="road">
+  <video class="road__v" poster="media/road-poster.jpg" muted loop playsinline preload="none" aria-hidden="true">
+    <source src="media/road.mp4" type="video/mp4" />
+  </video>
+  <div class="road__o"></div>
+  <div class="road__t">
+    <h2 class="h2"><span class="line"><span data-i18n="road.h1">Between here</span></span><span class="line red"><span data-i18n="road.h2">and anywhere.</span></span></h2>
+    <p class="reveal" data-i18n="road.p">Every car we sell is driven the Duhok–Zakho road and back before it reaches the floor. If something is going to rattle, it rattles for us first.</p>
+  </div>
+</section>
+
+<!-- ── why ──────────────────────────────────────────────── -->
+<section class="why" id="why">
+  <div class="wrap">
+    <header class="sec sec--center">
+      <p class="ey reveal" data-i18n="why.ey">Why us</p>
+      <h2 class="h2"><span class="line red"><span data-i18n="why.h">Four things we do differently.</span></span></h2>
+    </header>
+    <div class="why__grid" id="whygrid"></div>
+  </div>
+</section>
+
+<!-- ── test drive ───────────────────────────────────────── -->
+<section class="drive" id="drive">
+  <div class="wrap drive__grid">
+    <div>
+      <p class="ey reveal" data-i18n="drive.ey">Test drive</p>
+      <h2 class="h2"><span class="line"><span data-i18n="drive.h1">Take it out</span></span><span class="line red"><span data-i18n="drive.h2">for an hour.</span></span></h2>
+      <p class="lead reveal" data-i18n="drive.p">No salesperson in the passenger seat unless you want one. Bring your licence, take the car, drive the road you actually drive.</p>
+      <ul class="info" id="visit">
+        <li><b data-i18n="drive.i1">Hours</b><span data-i18n="drive.i1v">Sat – Thu · 09:00 – 19:00</span></li>
+        <li><b data-i18n="drive.i2">Where</b><span data-i18n="drive.i2v">Zaxo Road km 4, Duhok</span></li>
+        <li><b data-i18n="drive.i3">Phone</b><span dir="ltr">0750 000 0000</span></li>
+      </ul>
+    </div>
+
+    <form class="drive__form" id="driveform" novalidate>
+      <label class="fld"><span data-i18n="drive.f0">Which car</span>
+        <select name="car" id="carselect"></select>
+      </label>
+      <div class="f2">
+        <label class="fld"><span data-i18n="drive.f1">Name</span><input name="name" required autocomplete="name" /></label>
+        <label class="fld"><span data-i18n="drive.f2">Phone</span><input name="phone" required inputmode="tel" dir="ltr" autocomplete="tel" /></label>
+      </div>
+      <div class="f2">
+        <label class="fld"><span data-i18n="drive.f3">Day</span><input name="date" type="date" required /></label>
+        <label class="fld"><span data-i18n="drive.f4">Time</span><input name="time" type="time" value="11:00" required /></label>
+      </div>
+      <label class="chk"><input type="checkbox" name="trade" /><span data-i18n="drive.f5">I have a car to trade in</span></label>
+      <button class="btn btn--full" type="submit"><span data-i18n="drive.send">Request the drive</span></button>
+      <p class="okmsg" id="okmsg" role="status" hidden data-i18n="drive.ok">Thank you — this is a demonstration site, so nothing was actually sent.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__grid">
+    <div>
+      <div class="foot__brand">ZAGROS<i>MOTORS</i></div>
+      <p data-i18n="foot.tag">Duhok, Kurdistan · Trading since 2017</p>
+    </div>
+    <ul class="foot__links">
+      <li><a href="#stock" data-i18n="nav.stock">Stock</a></li>
+      <li><a href="#featured" data-i18n="nav.featured">Featured</a></li>
+      <li><a href="#why" data-i18n="nav.why">Why us</a></li>
+      <li><a href="#drive" data-i18n="nav.drive">Test drive</a></li>
+    </ul>
+    <div class="foot__note">
+      <p data-i18n="foot.demo">Concept site — not a real dealership.</p>
+      <a href="https://gocuatro.com" class="foot__by">Designed &amp; built by <b>GoCuatro</b></a>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Cloudflare Pages publishes this repo root directly, so keep build artefacts out.
+# The helper scripts stay (they are small and worth versioning); the heavy outputs
+# they produce do not.
+work/_src/shots/
+work/_src/cache/
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store

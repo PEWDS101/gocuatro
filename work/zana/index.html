@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>ZANA Dental Studio — Duhok</title>
+<meta name="description" content="A calm dental studio in Duhok. Implants, alignment, whitening and general care — with the whole plan explained before anything begins." />
+<meta name="theme-color" content="#F7F5F2" />
+<meta property="og:title" content="ZANA Dental Studio — Duhok" />
+<meta property="og:image" content="media/hero-clinic.webp" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Public+Sans:ital,wght@0,300..700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+<script>document.documentElement.className='js';</script>
+</head>
+<body>
+
+<!-- soft field behind the hero (Haikei-style layered mesh) -->
+<svg class="mesh" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <radialGradient id="g1" cx="50%" cy="50%"><stop offset="0%" stop-color="#8FC9BE" stop-opacity=".55"/><stop offset="100%" stop-color="#8FC9BE" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g2" cx="50%" cy="50%"><stop offset="0%" stop-color="#CFE4DC" stop-opacity=".8"/><stop offset="100%" stop-color="#CFE4DC" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g3" cx="50%" cy="50%"><stop offset="0%" stop-color="#F0DCC8" stop-opacity=".6"/><stop offset="100%" stop-color="#F0DCC8" stop-opacity="0"/></radialGradient>
+  </defs>
+  <circle class="b1" cx="880" cy="180" r="330" fill="url(#g1)"/>
+  <circle class="b2" cx="240" cy="420" r="380" fill="url(#g2)"/>
+  <circle class="b3" cx="620" cy="120" r="260" fill="url(#g3)"/>
+</svg>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top">
+    <span class="brand__mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 6.5c2.6-2.2 6.2-2 8 .4 1.9 2.6 1.3 6.6.2 10.3-1 3.4-2.4 7.4-4.2 7.9-1.3.3-2-1.3-4-1.3s-2.7 1.6-4 1.3c-1.8-.5-3.2-4.5-4.2-7.9C6.7 13.5 6.1 9.5 8 6.9c1.8-2.4 5.4-2.6 8-.4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+    </span>
+    <span class="brand__txt">ZANA<i>Dental Studio</i></span>
+  </a>
+
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#care" data-i18n="nav.care">Treatments</a>
+    <a href="#results" data-i18n="nav.results">Results</a>
+    <a href="#visit" data-i18n="nav.visit">Your visit</a>
+    <a href="#team" data-i18n="nav.team">Team</a>
+  </nav>
+
+  <div class="nav__end">
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" class="on">EN</button>
+      <button type="button" data-lang="ckb">KU</button>
+      <button type="button" data-lang="ar">AR</button>
+    </div>
+    <a class="btn btn--sm" href="#book" data-i18n="nav.book">Book</a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i></button>
+  </div>
+  <div class="nav__prog" id="navprog" aria-hidden="true"></div>
+</header>
+
+<div class="sheet" id="sheet" hidden>
+  <a href="#care" data-i18n="nav.care">Treatments</a>
+  <a href="#results" data-i18n="nav.results">Results</a>
+  <a href="#visit" data-i18n="nav.visit">Your visit</a>
+  <a href="#team" data-i18n="nav.team">Team</a>
+  <a href="#book" data-i18n="nav.book">Book</a>
+</div>
+
+<main id="top">
+
+<!-- ── hero ─────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero__text">
+    <p class="pill reveal"><i></i><span data-i18n="hero.pill">Taking new patients this month</span></p>
+    <h1><span class="line"><span data-i18n="hero.l1">Dentistry that</span></span><span class="line"><span data-i18n="hero.l2">explains itself</span></span><span class="line em"><span data-i18n="hero.l3">before it begins.</span></span></h1>
+    <p class="lead reveal" data-i18n="hero.sub">You will see the plan, the number of visits and the full price written down before we pick up a single instrument. No surprises halfway through.</p>
+    <div class="hero__cta reveal">
+      <a class="btn" href="#book" data-i18n="hero.cta1">Book a consultation</a>
+      <a class="btn btn--quiet" href="#results" data-i18n="hero.cta2">See real results</a>
+    </div>
+    <ul class="assure reveal">
+      <li data-i18n="hero.a1">Written price first</li>
+      <li data-i18n="hero.a2">Evening appointments</li>
+      <li data-i18n="hero.a3">Kurdish · Arabic · English</li>
+    </ul>
+  </div>
+
+  <figure class="hero__fig">
+    <img src="media/hero-clinic.webp" alt="A calm, modern dental treatment room" width="1920" height="1080" fetchpriority="high" decoding="async" />
+    <figcaption class="hero__badge">
+      <b class="num" data-to="12" data-suffix="">0</b>
+      <span data-i18n="hero.badge">years caring for Duhok</span>
+    </figcaption>
+  </figure>
+</section>
+
+<!-- ── trust ────────────────────────────────────────────── -->
+<section class="trust">
+  <div class="wrap trust__grid">
+    <div><b class="num" data-to="4200" data-suffix="+">0</b><span data-i18n="trust.t1">Patients treated</span></div>
+    <div><b class="num" data-to="12" data-suffix="">0</b><span data-i18n="trust.t2">Years open</span></div>
+    <div><b class="num" data-to="6">0</b><span data-i18n="trust.t3">Specialists</span></div>
+    <div><b class="num" data-to="98" data-suffix="%">0</b><span data-i18n="trust.t4">Would return</span></div>
+  </div>
+</section>
+
+<!-- ── treatments ───────────────────────────────────────── -->
+<section class="care" id="care">
+  <div class="wrap">
+    <header class="sec">
+      <p class="eyebrow reveal" data-i18n="care.eyebrow">Treatments</p>
+      <h2 class="h2"><span class="line"><span data-i18n="care.h1">What we do,</span></span><span class="line em"><span data-i18n="care.h2">and what it costs.</span></span></h2>
+      <p class="lead reveal" data-i18n="care.sub">Starting prices in Iraqi dinar. Your exact figure is confirmed in writing at the consultation, which is free.</p>
+    </header>
+
+    <div class="cards" id="cards"></div>
+  </div>
+</section>
+
+<!-- ── before / after ───────────────────────────────────── -->
+<section class="ba" id="results">
+  <div class="wrap">
+    <header class="sec sec--center">
+      <p class="eyebrow reveal" data-i18n="ba.eyebrow">Real results</p>
+      <h2 class="h2"><span class="line"><span data-i18n="ba.h1">Drag to see</span></span><span class="line em"><span data-i18n="ba.h2">the difference.</span></span></h2>
+    </header>
+
+    <div class="compare" id="compare" role="group" aria-label="Before and after comparison">
+      <img class="compare__b" src="media/smile-before.webp" alt="Before treatment" decoding="async" />
+      <div class="compare__clip" id="clip">
+        <img src="media/smile-after.webp" alt="After treatment" decoding="async" />
+      </div>
+      <div class="compare__tagb" data-i18n="ba.before">Before</div>
+      <div class="compare__taga" data-i18n="ba.after">After</div>
+      <input class="compare__range" id="range" type="range" min="0" max="100" value="50"
+             aria-label="Reveal amount" />
+      <div class="compare__handle" id="handle" aria-hidden="true"><i></i></div>
+    </div>
+    <p class="ba__note reveal" data-i18n="ba.note">Composite veneers and whitening, four visits over three weeks.</p>
+  </div>
+</section>
+
+<!-- ── your visit ───────────────────────────────────────── -->
+<section class="steps" id="visit">
+  <div class="wrap">
+    <header class="sec">
+      <p class="eyebrow reveal" data-i18n="steps.eyebrow">Your visit</p>
+      <h2 class="h2"><span class="line"><span data-i18n="steps.h1">Four steps.</span></span><span class="line em"><span data-i18n="steps.h2">No surprises.</span></span></h2>
+    </header>
+
+    <ol class="steps__list" id="steplist"></ol>
+  </div>
+</section>
+
+<!-- ── team ─────────────────────────────────────────────── -->
+<section class="team" id="team">
+  <div class="wrap team__grid">
+    <figure class="team__fig par" data-speed="-20">
+      <img src="media/staff.webp" alt="A member of the clinical team" decoding="async" loading="lazy" />
+    </figure>
+    <div class="team__text">
+      <p class="eyebrow reveal" data-i18n="team.eyebrow">The team</p>
+      <h2 class="h2"><span class="line"><span data-i18n="team.h1">Six people who</span></span><span class="line em"><span data-i18n="team.h2">will know your name.</span></span></h2>
+      <p class="lead reveal" data-i18n="team.p">You are seen by the same dentist each visit. Nurses, hygienist and technician all work in this building, so nothing is sent away and nothing gets lost between clinics.</p>
+      <ul class="team__list reveal">
+        <li><b>Dr. Zana Ibrahim</b><span data-i18n="team.r1">Implants &amp; surgery</span></li>
+        <li><b>Dr. Nask Haji</b><span data-i18n="team.r2">Alignment</span></li>
+        <li><b>Dr. Rezan Aziz</b><span data-i18n="team.r3">Cosmetic &amp; whitening</span></li>
+        <li><b>Dr. Karwan Salih</b><span data-i18n="team.r4">Children</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── booking ──────────────────────────────────────────── -->
+<section class="book" id="book">
+  <div class="wrap book__wrap">
+    <div class="book__left">
+      <p class="eyebrow reveal" data-i18n="book.eyebrow">Book</p>
+      <h2 class="h2"><span class="line"><span data-i18n="book.h1">The consultation</span></span><span class="line em"><span data-i18n="book.h2">is free.</span></span></h2>
+      <p class="lead reveal" data-i18n="book.sub">Twenty minutes, an examination, and a written plan you can take away and think about. There is no obligation to book anything after it.</p>
+      <ul class="info">
+        <li><b data-i18n="book.i1">Hours</b><span data-i18n="book.i1v">Sat – Thu · 09:00 – 20:00</span></li>
+        <li><b data-i18n="book.i2">Where</b><span data-i18n="book.i2v">Barzani Street, opposite Duhok Mall</span></li>
+        <li><b data-i18n="book.i3">Phone</b><span dir="ltr">0750 000 0000</span></li>
+        <li><b data-i18n="book.i4">Emergency</b><span data-i18n="book.i4v">Same-day slots kept free every morning</span></li>
+      </ul>
+    </div>
+
+    <form class="book__form" id="bookform" novalidate>
+      <fieldset class="pick">
+        <legend data-i18n="book.f0">What is it about?</legend>
+        <div class="pick__row" id="reason">
+          <button type="button" class="on" data-v="check" data-i18n="book.p1">Check-up</button>
+          <button type="button" data-v="pain" data-i18n="book.p2">Pain</button>
+          <button type="button" data-v="cosmetic" data-i18n="book.p3">Cosmetic</button>
+          <button type="button" data-v="implant" data-i18n="book.p4">Implant</button>
+          <button type="button" data-v="align" data-i18n="book.p5">Alignment</button>
+        </div>
+      </fieldset>
+
+      <div class="f2">
+        <label class="fld"><span data-i18n="book.f1">Name</span><input name="name" required autocomplete="name" /></label>
+        <label class="fld"><span data-i18n="book.f2">Phone</span><input name="phone" required inputmode="tel" dir="ltr" autocomplete="tel" /></label>
+      </div>
+      <div class="f2">
+        <label class="fld"><span data-i18n="book.f3">Preferred day</span><input name="date" type="date" required /></label>
+        <label class="fld"><span data-i18n="book.f4">Preferred time</span>
+          <select name="time">
+            <option>09:00 – 11:00</option><option selected>11:00 – 14:00</option>
+            <option>14:00 – 17:00</option><option>17:00 – 20:00</option>
+          </select>
+        </label>
+      </div>
+      <label class="fld"><span data-i18n="book.f5">Anything you want us to know</span><textarea name="note" rows="2"></textarea></label>
+
+      <button class="btn btn--full" type="submit"><span data-i18n="book.send">Request the appointment</span></button>
+      <p class="okmsg" id="okmsg" role="status" hidden data-i18n="book.ok">Thank you — this is a demonstration site, so nothing was actually sent.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ── faq ──────────────────────────────────────────────── -->
+<section class="faq">
+  <div class="wrap">
+    <header class="sec sec--center">
+      <p class="eyebrow reveal" data-i18n="faq.eyebrow">Questions</p>
+      <h2 class="h2"><span class="line em"><span data-i18n="faq.h1">The ones people actually ask.</span></span></h2>
+    </header>
+    <div class="faq__list" id="faqlist"></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__grid">
+    <div>
+      <div class="foot__brand">ZANA</div>
+      <p data-i18n="foot.tag">Dental Studio · Duhok, Kurdistan</p>
+    </div>
+    <ul class="foot__links">
+      <li><a href="#care" data-i18n="nav.care">Treatments</a></li>
+      <li><a href="#results" data-i18n="nav.results">Results</a></li>
+      <li><a href="#visit" data-i18n="nav.visit">Your visit</a></li>
+      <li><a href="#book" data-i18n="nav.book">Book</a></li>
+    </ul>
+    <div class="foot__note">
+      <p data-i18n="foot.demo">Concept site — not a real clinic.</p>
+      <a href="https://gocuatro.com" class="foot__by">Designed &amp; built by <b>GoCuatro</b></a>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

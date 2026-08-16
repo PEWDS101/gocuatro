@@ -1,0 +1,20 @@
+# Cloudflare Pages reads this file automatically. Leave it at the top level.
+
+# Images and icons change rarely — cache them for a month.
+/assets/*
+  Cache-Control: public, max-age=2592000
+
+# Stylesheet and scripts revalidate hourly. Deliberately NOT "immutable":
+# the filenames carry no version hash, so a year-long cache would leave
+# returning visitors stuck on an old design after you redeploy.
+/css/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/js/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
