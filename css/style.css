@@ -960,7 +960,19 @@ body[data-page="contact"]  .nav-contact::after {
 }
 
 /* ── work preview ─────────────────────────────────────────────────────── */
-.work--three { grid-template-columns: repeat(auto-fit, minmax(288px, 1fr)); }
+/* The five-card grid is a deliberate 6-column mosaic: cards 1-2 span 3 and
+   cards 3-5 span 2. The home page shows only three, so it needs an even
+   three-up — and it has to override those child spans, not just the column
+   count, or card 1 still claims 3 of 4 columns and goes full width.
+   :nth-child(n) matches the same specificity as the rule it overrides. */
+.work--three { grid-template-columns: repeat(3, 1fr); }
+.work--three > :nth-child(n) { grid-column: span 1; }
+@media (max-width: 1000px) {
+  .work--three { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .work--three { grid-template-columns: 1fr; }
+}
 .work__all { margin-block-start: clamp(2rem, 4vw, 3rem); text-align: center; }
 
 /* ── the closing call to action ───────────────────────────────────────── */
