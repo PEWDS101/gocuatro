@@ -167,22 +167,12 @@
   });
 
 
-  /* ── 5. Scroll-spy ────────────────────────────────────── */
-  var links = $$('.nav__a');
-  var secs  = $$('main section[id]');
-
-  if ('IntersectionObserver' in window && secs.length) {
-    var spy = new IntersectionObserver(function (list) {
-      list.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        links.forEach(function (l) {
-          l.classList.toggle('is-on', l.getAttribute('href') === '#' + en.target.id);
-        });
-      });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    secs.forEach(function (s) { spy.observe(s); });
-  }
-
+  /* ── 5. Current page ───────────────────────── */
+  /* The site used to be one page, so this was an IntersectionObserver that lit
+     the nav item matching the section in view. Now each nav item is its own
+     page, so the current one is marked from body[data-page] in CSS — see
+     "current page" in style.css. The old spy compared href to '#'+id, which no
+     page URL can ever match, so it stripped is-on from every link instead. */
 
   /* ── 6. Reveal ────────────────────────────────────────── */
   var shy = $$('.rise');

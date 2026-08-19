@@ -906,3 +906,167 @@ html[dir="rtl"] .wcard:hover .wcard__go::after{transform:translateX(-4px)}
   .nav,.drawer,.scrim,.sheet,.foot__ico,.hero__glow{display:none !important}
   body{background:#fff;color:#111}
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MULTI-PAGE + POLISH
+   Added when the single page was split into six. Everything here obeys the
+   house rule: one charcoal ground, one orange accent, everything else
+   greyscale. Gold stays confined to the logo artwork and .st in the hero
+   editor — do not reintroduce it as a second accent.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── current page ─────────────────────────────────────────────────────────
+   The nav used to be lit by an IntersectionObserver scroll-spy. Each item is
+   its own page now, so the current one is marked from body[data-page] with no
+   JavaScript at all — it is correct before first paint and cannot be undone by
+   a script error. */
+body[data-page="index"]    .nav-home,
+body[data-page="about"]    .nav-about,
+body[data-page="services"] .nav-services,
+body[data-page="work"]     .nav-work,
+body[data-page="process"]  .nav-process,
+body[data-page="contact"]  .nav-contact { color: var(--fg); }
+
+body[data-page="index"]    .nav-home::after,
+body[data-page="about"]    .nav-about::after,
+body[data-page="services"] .nav-services::after,
+body[data-page="work"]     .nav-work::after,
+body[data-page="process"]  .nav-process::after,
+body[data-page="contact"]  .nav-contact::after {
+  content: ""; position: absolute; bottom: .3rem; inset-inline-start: 50%;
+  translate: -50% 0; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent);
+}
+[dir="rtl"] body[data-page] .nav__a::after { translate: 50% 0; }
+
+/* ── a whole card that is a link ──────────────────────────────────────────
+   Used on the home page, where each service card goes through to the full
+   entry on services.html. */
+.card--link { text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+.card--link:hover { border-color: var(--line-2); }
+.card__go {
+  margin-block-start: auto; padding-block-start: 1.1rem;
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-size: .875rem; font-weight: 600; color: var(--accent);
+}
+.card__go::after {
+  content: "→"; transition: transform .22s var(--e);
+}
+[dir="rtl"] .card__go::after { content: "←"; }
+.card--link:hover .card__go::after { transform: translateX(4px); }
+[dir="rtl"] .card--link:hover .card__go::after { transform: translateX(-4px); }
+@media (prefers-reduced-motion: reduce) {
+  .card--link:hover .card__go::after { transform: none; }
+}
+
+/* ── work preview ─────────────────────────────────────────────────────── */
+.work--three { grid-template-columns: repeat(auto-fit, minmax(288px, 1fr)); }
+.work__all { margin-block-start: clamp(2rem, 4vw, 3rem); text-align: center; }
+
+/* ── the closing call to action ───────────────────────────────────────── */
+.band--cta { background: var(--bg-alt); border-block-start: 1px solid var(--line); }
+.cta {
+  display: grid; gap: clamp(1.5rem, 4vw, 3.5rem);
+  grid-template-columns: 1.15fr .85fr; align-items: center;
+}
+@media (max-width: 860px) { .cta { grid-template-columns: 1fr; } }
+.cta__copy .head__p { margin-block-start: .9rem; }
+.cta__act { display: flex; flex-direction: column; gap: .7rem; align-items: stretch; }
+@media (min-width: 861px) { .cta__act { align-items: flex-start; } }
+.cta__act .btn { justify-content: center; }
+
+/* ═══ POLISH ══════════════════════════════════════════════════════════════ */
+
+/* 1. The accent underline that grows under a section heading. One shared
+      gesture rather than a different flourish per section. */
+.head > .h2 { position: relative; }
+/* .head is centred, so the rule is centred with it — anchoring it to
+   inset-inline-start:0 put it at the far left of a full-width h2.
+
+   It has to draw itself on BOTH reveal paths. Where the browser supports
+   scroll-driven animations main.js sets html.sda and never adds .in, so a
+   .in-only selector silently never matches (which is exactly what happened).
+   Default state is VISIBLE, so a script failure leaves the rule drawn rather
+   than missing — same guard as .rise itself. scaleX, not width, so it runs on
+   the compositor. */
+.head > .h2::after {
+  content: ""; position: absolute; inset-block-end: -.55rem;
+  inset-inline-start: 50%; translate: -50% 0;
+  height: 2px; width: 3.25rem; background: var(--accent);
+  transform-origin: center;
+}
+html.js .head > .h2::after {
+  transform: scaleX(0);
+  transition: transform .7s var(--e) .15s;
+}
+html.js .head > .h2.in::after { transform: scaleX(1); }
+
+@supports (animation-timeline: view()) {
+  html.sda .head > .h2::after {
+    transform: scaleX(0);
+    animation: ruleIn linear both;
+    animation-timeline: view();
+    animation-range: entry 12% entry 62%;
+  }
+}
+@keyframes ruleIn { to { transform: scaleX(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .head > .h2::after,
+  html.sda .head > .h2::after { transform: none; animation: none; transition: none; }
+}
+
+/* 2. Cards lift on hover instead of only changing border colour, and the lift
+      is a transform so it never reflows the grid. */
+.card {
+  transition: transform .28s var(--e), border-color .28s var(--e),
+              background-color .28s var(--e), box-shadow .28s var(--e);
+  will-change: transform;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, .8);
+}
+.wcard { transition: transform .3s var(--e), border-color .3s var(--e), box-shadow .3s var(--e); }
+.wcard:hover { transform: translateY(-5px); box-shadow: 0 24px 50px -28px rgba(0, 0, 0, .85); }
+.wcard__shot img { transition: transform .55s var(--e); }
+.wcard:hover .wcard__shot img { transform: scale(1.035); }
+@media (prefers-reduced-motion: reduce) {
+  .card:hover, .wcard:hover { transform: none; }
+  .wcard:hover .wcard__shot img { transform: none; }
+}
+
+/* 3. A quiet sheen that crosses a primary button once on hover. */
+.btn { position: relative; overflow: hidden; }
+.btn::after {
+  content: ""; position: absolute; inset-block: 0; inset-inline-start: -60%;
+  width: 45%; pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .16), transparent);
+  transform: translateX(0); opacity: 0;
+}
+.btn:hover::after { animation: sheen .75s var(--e) forwards; }
+@keyframes sheen {
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(340%); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover::after { animation: none; }
+}
+
+/* 4. The stuck header gains blur and a soft drop. Its background and its
+      height change are already set earlier in this file by the original
+      .nav.stuck rule — do NOT restate the background here, or this later rule
+      silently wins and the header shifts colour. */
+.nav.stuck {
+  -webkit-backdrop-filter: saturate(150%) blur(12px);
+  backdrop-filter: saturate(150%) blur(12px);
+  box-shadow: 0 14px 34px -28px rgba(0, 0, 0, .9);
+}
+
+/* 5. Ticks draw their marker in the accent, and stagger down the list. */
+.ticks li { transition: color .2s var(--e); }
+.card:hover .ticks li { color: var(--fg-2); }
+
+/* 6. Interior pages open with the same rise the home page uses, so arriving
+      on services.html does not feel flatter than arriving on index.html. */
+.band > .shell > .head { position: relative; }

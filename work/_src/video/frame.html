@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<title>GoCuatro reel frame</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Manrope:wght@500;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:#0B0D0F}
+  body{font-family:'IBM Plex Sans Arabic','Manrope',sans-serif;-webkit-font-smoothing:antialiased}
+
+  /* ── ground ─────────────────────────────────────── */
+  .bg{position:absolute;inset:0;background:var(--g1)}
+  .glow{position:absolute;inset:0;background:
+      radial-gradient(70% 45% at 50% 22%, var(--accentA) 0%, transparent 62%),
+      radial-gradient(60% 40% at 20% 88%, var(--accentB) 0%, transparent 65%);
+      opacity:.85}
+  .grain{position:absolute;inset:-50%;opacity:.055;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:gr 6s steps(5) infinite}
+  @keyframes gr{0%,100%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-2%)}}
+  .vig{position:absolute;inset:0;background:radial-gradient(120% 75% at 50% 45%,transparent 45%,rgba(0,0,0,.55) 100%)}
+
+  /* ── top block ──────────────────────────────────── */
+  .top{position:absolute;top:96px;left:0;right:0;text-align:center;padding:0 72px}
+  .mark{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:38px;
+        opacity:0;transform:translateY(-14px);animation:fadeDown .9s .15s cubic-bezier(.16,1,.3,1) forwards}
+  .mark img{width:62px;height:62px;object-fit:contain}
+  .mark span{font-family:'Manrope';font-weight:800;font-size:34px;letter-spacing:.02em;color:#fff}
+
+  .kicker{font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:.34em;
+          color:var(--accentT);text-transform:uppercase;margin-bottom:26px;
+          opacity:0;animation:fade .8s .5s ease forwards}
+
+  h1{font-size:74px;line-height:1.34;font-weight:700;color:#fff;letter-spacing:0}
+  h1 .ln{display:block;overflow:hidden}
+  h1 .ln i{display:block;font-style:normal;transform:translateY(112%);
+           animation:rise 1s cubic-bezier(.16,1,.3,1) forwards}
+  h1 .ln:nth-child(1) i{animation-delay:.35s}
+  h1 .ln:nth-child(2) i{animation-delay:.47s}
+  h1 em{font-style:normal;color:var(--accentT)}
+
+  .sub{margin-top:26px;font-size:31px;line-height:1.6;color:rgba(255,255,255,.62);
+       opacity:0;animation:fade .9s .95s ease forwards}
+
+  /* ── browser ────────────────────────────────────── */
+  /* geometry must stay FIXED: the site recording is composited into this slot
+     by ffmpeg at a constant rectangle, so the intro may move opacity only */
+  .stage{position:absolute;top:660px;left:60px;width:960px;
+         opacity:0;animation:stageIn 1.2s .6s cubic-bezier(.16,1,.3,1) forwards}
+  .win{border-radius:20px;overflow:hidden;background:#0e1013;
+       box-shadow:0 60px 120px -40px rgba(0,0,0,.9),
+                  0 0 0 1px rgba(255,255,255,.09),
+                  0 0 90px -30px var(--accentA)}
+  /* browser chrome and the wordmark stay LTR even though the page is RTL */
+  .bar{height:56px;background:#16191d;display:flex;align-items:center;gap:9px;padding:0 20px;
+       border-bottom:1px solid rgba(255,255,255,.07);direction:ltr}
+  .mark{direction:ltr}
+  .dot{width:13px;height:13px;border-radius:50%}
+  .url{flex:1;margin:0 16px;height:32px;border-radius:16px;background:#0d0f12;
+       display:flex;align-items:center;justify-content:center;gap:9px;
+       font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(255,255,255,.55);direction:ltr}
+  .url b{color:#fff;font-weight:500}
+  .lock{width:12px;height:12px;border:2px solid rgba(255,255,255,.4);border-radius:3px;border-top-width:6px;
+        border-top-color:transparent;position:relative}
+  /* the <video> stays offscreen and is blitted into a canvas each frame:
+     Playwright's recorder does not capture composited video layers (they come
+     out solid white), but canvas paint is captured reliably */
+  /* the recording is NOT played in-page — Chrome will not reliably present a
+     paused/seeked video frame to a canvas here, and the slot rasterises white.
+     This is just the hole ffmpeg composites into. */
+  .slot{display:block;width:960px;height:600px;background:#07080A}
+
+  /* ── caption under the browser ──────────────────── */
+  .cap{position:absolute;top:1516px;left:0;right:0;text-align:center;padding:0 80px;
+       opacity:0;animation:fade .9s 1.3s ease forwards}
+  .cap .name{font-family:'Manrope';font-weight:800;font-size:46px;color:#fff;letter-spacing:.04em}
+  .cap .kind{margin-top:10px;font-size:27px;color:rgba(255,255,255,.55)}
+  .chip{display:inline-block;margin-top:20px;padding:9px 22px;border-radius:999px;
+        font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.16em;
+        color:var(--accentT);background:var(--accentChip);text-transform:uppercase}
+
+  /* ── footer CTA ─────────────────────────────────── */
+  .foot{position:absolute;bottom:96px;left:0;right:0;text-align:center;
+        opacity:0;animation:fade .9s 1.6s ease forwards}
+  .foot .cta{font-size:33px;color:rgba(255,255,255,.85);font-weight:600}
+  .foot .dom{margin-top:12px;font-family:'Manrope';font-weight:800;font-size:40px;color:#fff;letter-spacing:.03em;direction:ltr}
+  .foot .dom u{text-decoration:none;color:var(--accentT)}
+
+  /* progress */
+  .prog{position:absolute;bottom:0;left:0;height:7px;background:var(--accentT);width:0}
+
+  @keyframes fade{to{opacity:1}}
+  @keyframes fadeDown{to{opacity:1;transform:none}}
+  @keyframes rise{to{transform:translateY(0)}}
+  @keyframes stageIn{to{opacity:1}}
+</style>
+</head>
+<body>
+  <div class="bg"></div><div class="glow"></div><div class="grain"></div><div class="vig"></div>
+
+  <div class="top">
+    <div class="mark"><img id="logo" alt="" /><span>GoCuatro</span></div>
+    <div class="kicker" id="kicker"></div>
+    <h1 id="head"></h1>
+    <div class="sub" id="sub"></div>
+  </div>
+
+  <div class="stage">
+    <div class="win">
+      <div class="bar">
+        <span class="dot" style="background:#ff5f57"></span>
+        <span class="dot" style="background:#febc2e"></span>
+        <span class="dot" style="background:#28c840"></span>
+        <div class="url"><span class="lock"></span><b id="url"></b></div>
+      </div>
+      <div class="slot"></div>
+    </div>
+  </div>
+
+  <div class="cap">
+    <div class="name" id="name"></div>
+    <div class="kind" id="kind"></div>
+    <div class="chip" id="chip"></div>
+  </div>
+
+  <div class="foot">
+    <div class="cta" id="cta"></div>
+    <div class="dom">gocuatro<u>.com</u></div>
+  </div>
+
+  <div class="prog" id="prog"></div>
+
+<script>
+const CFG = {
+  tenur: {
+    g1:'linear-gradient(170deg,#140F0A 0%,#0A0806 55%,#120C07 100%)',
+    accentA:'rgba(232,162,43,.20)', accentB:'rgba(201,67,30,.16)',
+    accentT:'#E8A22B', accentChip:'rgba(232,162,43,.14)',
+    kicker:'Restaurant',
+    head:['موقع إلكتروني','<em>لمطعمك</em>'],
+    sub:'قائمة طعام بالصور · حجز الطاولات · ثلاث لغات',
+    name:'TENÛR', kind:'مطعم كباب وتنور — دهوك',
+    chip:'Concept', url:'gocuatro.com/work/tenur',
+    cta:'نصمّم لك موقعاً مثل هذا'
+  },
+  zana: {
+    g1:'linear-gradient(170deg,#0C1416 0%,#080D0F 55%,#0A1214 100%)',
+    accentA:'rgba(62,124,116,.26)', accentB:'rgba(200,154,107,.14)',
+    accentT:'#5FB3A6', accentChip:'rgba(95,179,166,.14)',
+    kicker:'Clinic',
+    head:['موقع إلكتروني','<em>لعيادتك</em>'],
+    sub:'قبل وبعد العلاج · حجز المواعيد · أسعار واضحة',
+    name:'ZANA', kind:'عيادة أسنان — دهوك',
+    chip:'Concept', url:'gocuatro.com/work/zana',
+    cta:'نصمّم لك موقعاً مثل هذا'
+  },
+  zeri: {
+    g1:'linear-gradient(170deg,#100A0C 0%,#070607 55%,#0E0709 100%)',
+    accentA:'rgba(142,36,54,.24)', accentB:'rgba(234,230,222,.07)',
+    accentT:'#D9536B', accentChip:'rgba(217,83,107,.13)',
+    kicker:'Online store',
+    head:['متجر','<em>إلكتروني</em>'],
+    sub:'سلة شراء · المجموع مباشرةً · معرض صور',
+    name:'ZERÎ', kind:'متجر ملابس نسائية — دهوك',
+    chip:'Concept', url:'gocuatro.com/work/zeri',
+    cta:'نصمّم لك موقعاً مثل هذا'
+  },
+  zagros: {
+    g1:'linear-gradient(170deg,#0B0E11 0%,#060708 55%,#0D0A0B 100%)',
+    accentA:'rgba(216,35,42,.22)', accentB:'rgba(154,163,172,.10)',
+    accentT:'#F03740', accentChip:'rgba(240,55,64,.13)',
+    kicker:'Showroom',
+    head:['موقع إلكتروني','<em>لمعرض سياراتك</em>'],
+    sub:'ترتيب السيارات · تبديل الألوان · حجز تجربة قيادة',
+    name:'ZAGROS', kind:'معرض سيارات — دهوك',
+    chip:'Concept', url:'gocuatro.com/work/zagros',
+    cta:'نصمّم لك موقعاً مثل هذا'
+  },
+  hez: {
+    g1:'linear-gradient(170deg,#0A0C14 0%,#06070A 55%,#090B12 100%)',
+    accentA:'rgba(43,75,255,.26)', accentB:'rgba(85,112,255,.14)',
+    accentT:'#7A90FF', accentChip:'rgba(122,144,255,.15)',
+    kicker:'Gym',
+    head:['موقع إلكتروني','<em>لناديك الرياضي</em>'],
+    sub:'جدول الحصص · عدّاد مباشر · باقات العضوية',
+    name:'HÊZ', kind:'نادٍ رياضي — دهوك',
+    chip:'Concept', url:'gocuatro.com/work/hez',
+    cta:'نصمّم لك موقعاً مثل هذا'
+  }
+};
+
+const site = new URLSearchParams(location.search).get('site') || 'tenur';
+const c = CFG[site];
+const r = document.documentElement.style;
+r.setProperty('--g1', c.g1);
+r.setProperty('--accentA', c.accentA);
+r.setProperty('--accentB', c.accentB);
+r.setProperty('--accentT', c.accentT);
+r.setProperty('--accentChip', c.accentChip);
+
+document.getElementById('logo').src = '/assets/logo-mark.png';
+document.getElementById('kicker').textContent = c.kicker;
+document.getElementById('head').innerHTML = c.head.map(l => `<span class="ln"><i>${l}</i></span>`).join('');
+document.getElementById('sub').textContent = c.sub;
+document.getElementById('name').textContent = c.name;
+document.getElementById('kind').textContent = c.kind;
+document.getElementById('chip').textContent = c.chip;
+document.getElementById('url').textContent = c.url;
+document.getElementById('cta').textContent = c.cta;
+
+const prog = document.getElementById('prog');
+const DUR = parseFloat(new URLSearchParams(location.search).get('dur') || '20');
+
+/* ── deterministic timeline ──────────────────────────────────
+   Frames are rendered one at a time with page.screenshot(), so wall-clock CSS
+   animation is useless — each animation is pinned instead by pausing it and
+   driving a negative animation-delay. Frame t looks identical no matter how
+   long the capture takes.                                                   */
+const ANIM = [...document.querySelectorAll(
+  '.mark,.kicker,h1 .ln i,.sub,.stage,.cap,.foot,.grain')]
+  .map(el => ({ el, base: parseFloat(getComputedStyle(el).animationDelay) || 0 }));
+
+window.__setTime = t => {
+  for (const a of ANIM) {
+    a.el.style.animationPlayState = 'paused';
+    a.el.style.animationDelay = (a.base - t) + 's';
+  }
+  prog.style.width = Math.min(100, t / DUR * 100) + '%';
+};
+window.__setTime(0);
+window.__ready = true;
+
+/* exact slot rectangle, handed to ffmpeg so the overlay lands perfectly */
+window.__slot = () => {
+  const r = document.querySelector('.slot').getBoundingClientRect();
+  return { x: Math.round(r.left), y: Math.round(r.top),
+           w: Math.round(r.width), h: Math.round(r.height) };
+};
+</script>
+</body>
+</html>

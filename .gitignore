@@ -4,7 +4,18 @@
 work/_src/shots/
 work/_src/cache/
 
+# reel pipeline — tooling and intermediates, none of it belongs on the live site
+work/_src/video/node_modules/
+work/_src/video/frames/
+work/_src/video/raw/
+work/_src/video/audio/
+work/_src/video/out/
+work/_src/video/package-lock.json
+
 # OS noise
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# audit screenshots — regenerated on demand by _src/probe.js and shot.js
+_audit/
