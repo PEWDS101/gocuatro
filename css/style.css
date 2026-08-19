@@ -217,10 +217,20 @@ html[lang="ar"] .brow,html[lang="ckb"] .brow{
   position:fixed;inset-block:0;inset-inline-end:0;z-index:99;
   width:min(86vw,320px);
   padding:calc(var(--nav-h) + 1.5rem) var(--pad) 2rem;
+  padding-block-end:max(2rem,env(safe-area-inset-bottom));
   display:flex;flex-direction:column;justify-content:space-between;gap:2rem;
   background:var(--deep);border-inline-start:1px solid var(--line);
   transform:translateX(101%);visibility:hidden;
   transition:transform .36s var(--e),visibility .36s;
+
+  /* The menu is taller than a short phone: 767px of content in a 568px
+     viewport on an iPhone SE, which left "Start a project" below the fold with
+     no way to reach it. It must scroll itself.
+     justify-content:space-between only distributes the SURPLUS, so it does
+     nothing once the content overflows — the scroll is what fixes it. */
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
 }
 [dir="rtl"] .drawer{transform:translateX(-101%)}
 .drawer.on{transform:translateX(0);visibility:visible}
