@@ -3,3 +3,10 @@
 # screenshots used to make the homepage preview cards. None of it is needed
 # to serve the site, and it is ~4.5 MB.
 work/_src/
+
+# The page source and build scripts. Versioned on purpose - they are how the
+# site is edited - but Pages publishes the repo root directly, so without this
+# _src/pages/*.html would be fetchable on the live domain and would rank as
+# duplicate content against the real pages.
+_src/
+_audit/
