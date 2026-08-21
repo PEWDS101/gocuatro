@@ -13,6 +13,10 @@
 
   --line:rgba(255,255,255,.075);
   --line-2:rgba(255,255,255,.15);
+  /* A card edge carries more than a divider does — it has to describe a shape,
+     not just separate two things. Kept below --line-2 so the hover step is
+     still visible. */
+  --line-card:rgba(255,255,255,.10);
 
   --fg:#F4F6F7;
   --fg-2:#A7ADB5;
@@ -30,7 +34,13 @@
   --pad:clamp(1.25rem,4vw,2.75rem);
   --max:1180px;
   --nav-h:76px;
-  --band-y:clamp(5rem,9.5vw,9rem);
+  /* Band padding is the OPENING of a section, not the gap between two of them.
+     Two adjacent bands used to contribute a full --band-y each, so every seam
+     measured ~250px of nothing and no break read as larger or smaller than any
+     other. The `.band + .band` rule below collapses the shared join; this value
+     is what a section opens with. */
+  --band-y:clamp(4.5rem,8vw,7rem);
+  --band-seam:.55;   /* share of --band-y a band keeps when one precedes it */
 
   --e:cubic-bezier(.22,.68,.28,1);
 
@@ -106,6 +116,10 @@ html[lang="ar"] .brow,html[lang="ckb"] .brow{
 .shell{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
 
 .band{padding-block:var(--band-y);scroll-margin-top:var(--nav-h)}
+/* A seam between two bands is ONE break, not two. Without this the two
+   paddings stack and every join is identical, which leaves the page no way to
+   say "new topic" more loudly than "next paragraph". */
+.band + .band{padding-block-start:calc(var(--band-y) * var(--band-seam))}
 .band--alt{background:var(--bg-alt);border-block:1px solid var(--line)}
 
 .head{max-width:42rem;margin-inline:auto;text-align:center;margin-bottom:clamp(2.75rem,5vw,4.5rem)}
@@ -119,6 +133,24 @@ html[lang="ar"] .brow,html[lang="ckb"] .brow{
 
 /* left-aligned head — used where a section should not read as centred */
 .head--start{margin-inline:0;text-align:start;max-width:40rem}
+
+/* Heading left, lede beside it. The home page ran five consecutive sections
+   with an identical centred stack, which is what made a careful page read as
+   templated — not the colours or the type, but the unvarying cadence. The
+   opening two stay centred (that is the pitch); from Work onward the page
+   settles into this editorial rhythm. */
+.head--split{
+  max-width:none;margin-inline:0;text-align:start;
+  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);
+  gap:.4rem clamp(2rem,5vw,4.5rem);align-items:end;
+}
+.head--split .brow{grid-column:1;grid-row:1}
+.head--split .h2{grid-column:1;grid-row:2;margin-block:.9rem 0}
+.head--split .head__p{grid-column:2;grid-row:2;margin-bottom:.35rem;max-width:34rem}
+@media (max-width:860px){
+  .head--split{grid-template-columns:1fr;gap:0}
+  .head--split .head__p{grid-column:1;grid-row:3;margin-top:1.35rem;margin-bottom:0}
+}
 
 .grid{display:grid;gap:1.15rem}
 .grid--4{grid-template-columns:repeat(4,1fr)}
@@ -155,7 +187,11 @@ html[lang="ar"] .brow,html[lang="ckb"] .brow{
   border-bottom:1px solid transparent;
   transition:height .28s var(--e),background-color .28s var(--e),border-color .28s var(--e);
 }
-.nav.stuck{height:64px;background:rgba(14,17,20,.92);border-bottom-color:var(--line)}
+/* .92 let 8% of a very large white headline read straight through the bar —
+   worst on phones, where the headline fills the width. Blur softens it but the
+   thing behind is the highest-contrast element on the page, so the alpha is
+   what had to move. */
+.nav.stuck{height:64px;background:rgba(14,17,20,.96);border-bottom-color:var(--line)}
 
 .nav__in{display:flex;align-items:center;gap:1.5rem}
 
@@ -172,9 +208,11 @@ html[lang="ar"] .brow,html[lang="ckb"] .brow{
 }
 .nav__a:hover{color:var(--fg);background:rgba(255,255,255,.045)}
 .nav__a.is-on{color:var(--fg)}
+/* A 4px dot on a 64px bar next to six items was easy to miss entirely. A short
+   bar reads at a glance and still costs the header nothing. */
 .nav__a.is-on::after{
   content:"";position:absolute;bottom:.3rem;inset-inline-start:50%;translate:-50% 0;
-  width:4px;height:4px;border-radius:50%;background:var(--accent);
+  width:16px;height:2px;border-radius:1px;background:var(--accent);
 }
 [dir="rtl"] .nav__a.is-on::after{translate:50% 0}
 
@@ -239,15 +277,21 @@ html[lang="ar"] .brow,html[lang="ckb"] .brow{
 .drawer__links a{
   padding:.95rem 0;font-size:1.2rem;font-weight:700;letter-spacing:-.02em;
   color:var(--fg);border-bottom:1px solid var(--line);
-  transition:color .2s var(--e),padding-inline-start .2s var(--e);
+  /* was padding-inline-start, which relayouts the drawer on every hover.
+     translate is the same movement off the layout path. */
+  transition:color .2s var(--e),translate .2s var(--e);
 }
-.drawer__links a:hover{color:var(--accent);padding-inline-start:.45rem}
+.drawer__links a:hover{color:var(--accent);translate:.45rem 0}
+[dir="rtl"] .drawer__links a:hover{translate:-.45rem 0}
 .drawer__end{display:flex;flex-direction:column;gap:.8rem}
 
 /* ── 8. Hero ───────────────────────────────────────────── */
 .hero{
   position:relative;
-  padding-block:calc(var(--nav-h) + clamp(4rem,9vw,7.5rem)) clamp(3.5rem,7vw,6rem);
+  /* The proof strip under the editor — hand-written / zero dependencies / RTL /
+     speed — is the most specific thing on the page and used to sit at ~946px on
+     a 900px viewport, so nobody arriving ever saw it. This buys it back. */
+  padding-block:calc(var(--nav-h) + clamp(2.5rem,5vw,4.5rem)) clamp(2.75rem,5.5vw,4.5rem);
   scroll-margin-top:0;overflow:hidden;
 }
 .hero__glow{
@@ -350,22 +394,36 @@ html[lang="ar"] .brow,html[lang="ckb"] .brow{
 }
 
 /* scroll progress — sits on the header's bottom edge */
+/* At full accent, collinear with the 1px border and stopping dead mid-width,
+   this read as a border that had failed to render rather than as progress.
+   Sitting it just below the border line and fading its leading edge makes it
+   something felt rather than something read. */
 .nav__bar{
-  position:absolute;inset-inline:0;bottom:-1px;height:2px;
-  background:var(--accent);
+  position:absolute;inset-inline:0;bottom:-2px;height:2px;
+  background:linear-gradient(to right,
+    var(--accent) 0%,var(--accent) 82%,rgba(255,106,31,.25) 100%);
   transform:scaleX(0);transform-origin:left center;
   pointer-events:none;
 }
-[dir="rtl"] .nav__bar{transform-origin:right center}
+[dir="rtl"] .nav__bar{
+  transform-origin:right center;
+  background:linear-gradient(to left,
+    var(--accent) 0%,var(--accent) 82%,rgba(255,106,31,.25) 100%);
+}
 
 /* ── 9. Cards ──────────────────────────────────────────── */
 .card{
   position:relative;display:block;width:100%;text-align:start;
   padding:1.85rem 1.7rem;
   background:var(--surface);
-  border:1px solid var(--line);border-radius:var(--r-lg);
+  border:1px solid var(--line-card);border-radius:var(--r-lg);
   overflow:hidden;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);   /* lit top edge */
+  /* --surface is only 1.11:1 against --bg, which is the correct Material dark
+     elevation step but not enough on its own at this card size. The lit top
+     edge plus a cast shadow is what makes it read as an object; without the
+     shadow the whole card was resting on a 7.5% hairline. */
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),
+             0 14px 34px -20px rgba(0,0,0,.85);
   transition:transform .28s var(--e),border-color .28s var(--e),
              background-color .28s var(--e),box-shadow .28s var(--e);
 }
@@ -422,10 +480,15 @@ html[lang="ar"] .card__k,html[lang="ckb"] .card__k{letter-spacing:.02em;text-tra
   display:flex;align-items:center;gap:.85rem;
   padding:1.1rem 1.2rem;
   background:var(--surface);
-  border:1px solid var(--line);border-radius:var(--r);
-  transition:border-color .25s var(--e),background-color .25s var(--e),transform .25s var(--e);
+  border:1px solid var(--line-card);border-radius:var(--r);
+  box-shadow:0 8px 20px -14px rgba(0,0,0,.8);
+  transition:border-color .25s var(--e),background-color .25s var(--e),
+             transform .25s var(--e),box-shadow .25s var(--e);
 }
-.build:hover{transform:translateY(-3px);border-color:var(--line-2);background:var(--surface-hi)}
+.build:hover{
+  transform:translateY(-3px);border-color:var(--line-2);background:var(--surface-hi);
+  box-shadow:0 16px 30px -20px rgba(0,0,0,.9);
+}
 .build svg{
   width:19px;height:19px;flex:none;fill:none;stroke:var(--accent);
   stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
@@ -657,6 +720,13 @@ html[lang="ar"] .card__k,html[lang="ckb"] .card__k{letter-spacing:.02em;text-tra
 html[lang="ar"] .foot__tag,html[lang="ckb"] .foot__tag{
   font-family:var(--font);letter-spacing:.02em;text-transform:none;font-size:.85rem;
 }
+
+.foot__num{margin-top:.55rem}
+.foot__num a{
+  font-family:var(--mono);font-size:.82rem;letter-spacing:.04em;
+  color:var(--fg-2);transition:color .2s var(--e);
+}
+.foot__num a:hover{color:var(--accent)}
 
 .foot__nav{display:flex;flex-wrap:wrap;gap:.25rem 1rem}
 .foot__nav a{
@@ -905,8 +975,12 @@ html[dir="rtl"] .wcard:hover .wcard__go::after{transform:translateX(-4px)}
   .ln{width:.85rem}
   .editor__bar{padding:.6rem .8rem;gap:.5rem}
   .etab{padding:.2rem .4rem;font-size:.64rem}
-  .editor__foot li{flex:1 1 100%;border-inline-end:0}
-  .editor__foot li:not(:last-child){border-bottom:1px solid var(--line)}
+  /* Four proof chips stacked one-per-row ran 176px tall and pushed the last two
+     off a phone screen. Two-up halves that and still fits the shortest label. */
+  .editor__foot{display:grid;grid-template-columns:1fr 1fr}
+  .editor__foot li{padding-inline:.6rem;border-inline-end:1px solid var(--line)}
+  .editor__foot li:nth-child(2n){border-inline-end:0}
+  .editor__foot li:nth-child(n+3){border-top:1px solid var(--line)}
   .card__go{display:none}
   .card--link{padding-inline-end:1.7rem}
 }
@@ -1044,6 +1118,13 @@ html.js .head > .h2.in::after { transform: scaleX(1); }
   }
 }
 @keyframes ruleIn { to { transform: scaleX(1); } }
+
+/* In a split head the h2 no longer fills the row, so the rule anchors to the
+   start edge and grows outward from it rather than from the middle. */
+.head--split > .h2::after {
+  inset-inline-start: 0; translate: none; transform-origin: left center;
+}
+[dir="rtl"] .head--split > .h2::after { transform-origin: right center; }
 
 @media (prefers-reduced-motion: reduce) {
   html.js .head > .h2::after,
@@ -1228,13 +1309,27 @@ html[lang="ar"] .quote em, html[lang="ckb"] .quote em {
 .prow__a {
   display: grid; grid-template-columns: 1fr auto; align-items: center;
   gap: .3rem 1.5rem; padding: 1.15rem 1.35rem;
-  background: var(--surface); border: 1px solid var(--line);
+  background: var(--surface); border: 1px solid var(--line-card);
   border-radius: var(--r);
+  box-shadow: 0 8px 20px -14px rgba(0, 0, 0, .8);
   transition: border-color .25s var(--e), background-color .25s var(--e),
-              transform .25s var(--e);
+              transform .25s var(--e), box-shadow .25s var(--e);
 }
-.prow__a:hover { border-color: var(--line-2); background: var(--surface-hi); transform: translateY(-2px); }
-.prow__t { font-size: 1.02rem; font-weight: 700; letter-spacing: -.02em; color: var(--fg); }
+.prow__a:hover {
+  border-color: var(--line-2); background: var(--surface-hi); transform: translateY(-2px);
+  box-shadow: 0 16px 30px -20px rgba(0, 0, 0, .9);
+}
+/* A price list is read across, not down: the leader carries the eye from the
+   product to its figure instead of leaving it to cross ~245px of open row. */
+.prow__t {
+  font-size: 1.02rem; font-weight: 700; letter-spacing: -.02em; color: var(--fg);
+  display: flex; align-items: baseline; gap: .8rem;
+}
+.prow__t::after {
+  content: ""; flex: 1 1 auto; height: 0;
+  border-block-start: 1px dotted var(--line-2);
+  transform: translateY(-.3em);
+}
 .prow__d { grid-column: 1; font-size: .86rem; line-height: 1.55; color: var(--fg-3); }
 .prow__p {
   grid-row: 1 / span 2; grid-column: 2;
@@ -1245,12 +1340,14 @@ html[lang="ar"] .quote em, html[lang="ckb"] .quote em {
 .prow__p .price__amt { font-size: 1.6rem; }
 
 /* ── home: what the client is left holding ─────────────────────────────── */
+/* Four facts with nothing holding them read as four floating text blocks. One
+   rule per item — rather than a single rule across the container — gives each
+   its own column and makes the group scan like a spec table. */
 .gets {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem 1.8rem;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.8rem;
   margin-top: clamp(2.5rem, 4.5vw, 3.5rem);
-  padding-top: clamp(2rem, 3.5vw, 2.75rem);
-  border-top: 1px solid var(--line);
 }
+.get { border-top: 1px solid var(--line-2); padding-top: 1.05rem; }
 .get b {
   display: block; margin-bottom: .35rem;
   font-size: .94rem; font-weight: 700; letter-spacing: -.015em; color: var(--fg);

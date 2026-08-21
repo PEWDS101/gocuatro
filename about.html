@@ -215,6 +215,68 @@
   </div>
 </section>
 
+<!-- ═══════════ ABOUT · HOW WE WORK ═══════════
+     A four-step read of the same process, reusing the process.* strings so this
+     can never disagree with process.html. Titles and descriptions only — the
+     tick-lists, the timing note and the CTA pair live on that page.
+
+     Why it is here: about.html was one two-column block and the shared CTA, and
+     "how do you actually work" is the question an About page is opened to
+     answer. No <h1> in this partial — about.html already has one, and there
+     must be exactly one per page. -->
+<section class="band" id="how">
+  <div class="shell">
+
+    <header class="head head--start">
+      <p class="brow rise" data-i18n="process.eyebrow">Process</p>
+      <h2 class="h2 rise" style="--w:.05s" data-i18n="process.title">What happens after you message us.</h2>
+      <p class="head__p rise" style="--w:.1s" data-i18n="process.sub">
+        No mystery, no drawn-out back and forth. Four steps from first message to live site.
+      </p>
+    </header>
+
+    <ol class="steps">
+      <li class="step rise" style="--w:.05s">
+        <span class="step__n" aria-hidden="true">01</span>
+        <h3 class="step__h" data-i18n="process.p1t">Talk</h3>
+        <p class="step__p" data-i18n="process.p1d">
+          We learn what the site has to do, who it's for, and what would make it worth
+          the money. Costs you nothing.
+        </p>
+      </li>
+      <li class="step rise" style="--w:.1s">
+        <span class="step__n" aria-hidden="true">02</span>
+        <h3 class="step__h" data-i18n="process.p2t">Design</h3>
+        <p class="step__p" data-i18n="process.p2d">
+          You see the layout and the look before a line of code is written, and we
+          change it until you're happy.
+        </p>
+      </li>
+      <li class="step rise" style="--w:.15s">
+        <span class="step__n" aria-hidden="true">03</span>
+        <h3 class="step__h" data-i18n="process.p3t">Build</h3>
+        <p class="step__p" data-i18n="process.p3d">
+          We hand-code it, test it on real phones and browsers, and tune it for speed
+          and search engines.
+        </p>
+      </li>
+      <li class="step rise" style="--w:.2s">
+        <span class="step__n" aria-hidden="true">04</span>
+        <h3 class="step__h" data-i18n="process.p4t">Launch</h3>
+        <p class="step__p" data-i18n="process.p4d">
+          We put it live, hand over every file, and show you how to keep it running
+          on your own.
+        </p>
+      </li>
+    </ol>
+
+    <div class="price__act rise" style="--w:.24s">
+      <a class="btn btn--ghost btn--lg" href="process.html" data-i18n="home.more">See the detail</a>
+    </div>
+
+  </div>
+</section>
+
 <!-- ═══════════ CTA ═══════════ -->
 <section class="band band--cta">
   <div class="shell cta">
@@ -241,6 +303,12 @@
     <div class="foot__brand">
       <img src="assets/logo-lockup.png" alt="GoCuatro" width="640" height="139" loading="lazy" decoding="async">
       <p class="foot__tag" data-i18n="footer.tag">Design. Build. Elevate.</p>
+      <!-- The phone icon above opens the sheet, which is the right control for
+           choosing WhatsApp vs Telegram vs a call. It is not a substitute for
+           being able to READ the number: a visitor who scrolled this far is the
+           one ready to use it, and an icon makes them guess. dir="ltr" keeps the
+           digits from re-ordering in Arabic and Kurdish. -->
+      <p class="foot__num"><a href="tel:07750775533" dir="ltr">0775 077 5533</a></p>
     </div>
 
     <nav class="foot__nav" data-i18n-attr="aria-label:a11y.footerNav" aria-label="Footer">
