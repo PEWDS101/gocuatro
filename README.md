@@ -47,6 +47,8 @@ The six root `.html` files are **generated**. Change wording in
 `js/translations.js`, change structure in `_src/`, then rebuild. `css/style.css`
 and `js/*.js` are used as-is and are edited directly.
 
+`python _src/build.py` also regenerates `js/config.js` from `_src/config.py`.
+
 Before publishing, run the two checks:
 
 ```bash
@@ -54,9 +56,15 @@ node _src/check_i18n.js   # every key has a value in English, Arabic and Kurdish
 node _src/probe.js        # needs a local server on :8910
 ```
 
+`check_i18n.js` fails on a missing translation and on a number range written
+with a dash inside Arabic or Kurdish copy, which reverses in RTL.
+
 `probe.js` walks all six pages in all three languages and fails on console
 errors, horizontal overflow, a nav that marks the wrong number of items,
-reveals stuck invisible, or the retired phone number reappearing.
+reveals stuck invisible, the retired phone number reappearing, a price shown
+without its "Starting at" label or disagreeing with `config.py`, a turnaround
+sentence that has lost its condition, a brief form that would submit empty, or
+a `wa.me` link pointing anywhere but the configured number.
 
 ## Putting it online
 
@@ -74,48 +82,151 @@ at the top. Netlify, Vercel and GitHub Pages all work the same drag-and-drop way
 
 ## Changing the text
 
-Everything written on the site lives in `js/translations.js`, grouped by language
-(`en`, `ar`, `ckb`). Find the line, change the words between the quotes, save.
-Change all three languages so they stay in step.
+Everything **written** on the site lives in `js/translations.js`, grouped by
+language (`en`, `ar`, `ckb`). Find the line, change the words between the
+quotes, save. Change all three languages so they stay in step.
 
-## Your contact details
+Everything that is a **value** — an address, a number, a price — is not in there.
+See the next section.
 
-These are already live and working:
+## Your business details — one file
+
+`_src/config.py` is the only place the email address, the phone number, the
+WhatsApp number, the social links, the three prices and the turnaround figures
+are written down. `python _src/build.py` substitutes them into all six pages
+**and** regenerates `js/config.js`, so the number the brief form dials can never
+drift from the one printed on the contact card.
+
+```python
+# _src/config.py
+"EMAIL":          "GoCuatro4@gmail.com",
+"WA_NUMBER":      "9647750775533",     # digits only, for wa.me
+"PHONE_DISPLAY":  "0775 077 5533",     # as a local reader expects to see it
+"TEL":            "07750775533",       # for tel:
+"INSTAGRAM":      "https://instagram.com/gocuatro",
+"THREADS":        "https://www.threads.com/@gocuatro",
+"TIKTOK":         "",                  # empty = the icon is not rendered at all
+"PRICE_MENU":     "75",
+"PRICE_PORTFOLIO":"75",
+"PRICE_BUSINESS": "200",
+"PRICE_BUSINESS_HI": "500",            # the common upper end, shown with a "+"
+"DAYS_MIN":       "2",
+"DAYS_MAX":       "4",
+```
+
+**Change a value, run `python _src/build.py`, deploy.** That is the whole
+procedure — for the email, for the phone number, for any price.
+
+Two rules that keep it honest:
+
+- **Words are not in there.** "Starting at", the currency label, and every
+  sentence stay in `js/translations.js` so they can be translated. Only the
+  numeral lives in config — see **Prices and the turnaround** below for the
+  exact markup and for the six prose strings that config cannot reach.
+- **An unknown value is an empty string**, and an empty value renders *nothing*
+  rather than a broken link. `TIKTOK` is empty because no TikTok URL exists for
+  this business. Put a real one in and the footer icon appears by itself.
+  `build.py` refuses to build if any other value is blank.
+
+### What is live now
 
 | Where | What it does |
 |---|---|
-| Email | Opens Gmail compose, addressed to `GoCuatro4@gmail.com`, on phone and desktop |
+| Email | Opens a plain `mailto:` — whatever mail app the visitor actually uses |
 | Phone | Opens a panel offering WhatsApp, Telegram, or a direct call |
+| WhatsApp | Direct to `wa.me/{{WA_NUMBER}}` |
 | Instagram | Opens `instagram.com/gocuatro` |
-| Short brief form | Writes the enquiry into a pre-filled Gmail message — no backend required |
+| Short brief form | Writes the enquiry into a WhatsApp message, ready to send — no backend. A `mailto:` fallback does the same |
 
-All of these live in `_src/`, not in the generated pages. Change them there
-and rebuild, or the next build overwrites your edit.
+`node _src/probe.js` checks that every `wa.me` link on every page uses the
+configured number, and that the retired number is nowhere on the site.
 
-**To change the phone number**, replace every occurrence across `_src/`:
-`https://wa.me/9647750775533`, `https://t.me/+9647750775533`,
-`tel:07750775533`, the displayed `0775 077 5533` labels, and `telephone` in the
-JSON-LD block in `_src/template.html`. `node _src/probe.js` fails if an old
-number is still reachable, so run it afterwards.
+## Prices and the turnaround
 
-**To change the Instagram handle**, replace `gocuatro` in the
-`https://instagram.com/gocuatro` links in `_src/template.html` and
-`_src/partials/sec_contact.html`.
+Prices are in **Iraqi dinars** (since 2026-08-21; they were in US dollars
+before). `_src/config.py` holds them as **raw integers** — `105000`, not
+`105,000` — and `build.py` derives two placeholders from each:
 
-**To change the email**, update `MAIL_TO` at the top of `js/main.js` and the
-`mail.google.com` links in `_src/`.
+| placeholder | value | used by |
+|---|---|---|
+| `{{PRICE_MENU}}` | `105000` | the JSON-LD, where schema.org wants a bare number |
+| `{{PRICE_MENU_FMT}}` | `105,000` | the page, where a person reads it |
+
+A figure is written as
+
+```html
+<b class="price__amt">
+  <span dir="ltr">{{PRICE_MENU_FMT}}</span>
+  <span class="price__cur" data-i18n="price.cur">IQD</span>
+</b>
+```
+
+The `dir="ltr"` is on the **numeral only**, not the whole amount. That is
+deliberate: the numeral must never be re-ordered, but the currency label has to
+sit on the side each language expects — after the figure in English, and to the
+figure's left in Arabic and Kurdish, which is what ordinary bidi flow does when
+the label is outside the isolate. The space between the two spans is real, so a
+screen reader says "105,000 IQD" rather than running them together.
+
+Five things are enforced by `node _src/probe.js` rather than by memory, in all
+three languages:
+
+1. **Every amount is preceded by "Starting at".**
+2. **Every amount is exactly one of the figures in `config.py`** — compared as
+   a set of raw digits, because the cards are ordered by price and that order
+   changes when a price does.
+3. **The prices ascend.** A pricing table that reads 105,000 / 75,000 / 225,000
+   looks like an oversight even when every figure is right.
+4. **Every amount is thousands-grouped and names its currency.**
+5. **No dollar amount survives anywhere on any page.**
+
+And separately: **the 2–4 day sentence always names its condition** — that the
+clock starts once the client's content and details have arrived. It is *one
+string per language* (`price.timeD`), reused on the pricing section, the process
+page and the FAQ, so it cannot be worded three different ways. If you edit it,
+keep the condition in it; the check reads the rendered page and fails without it.
+
+### The prose that config cannot reach
+
+Six strings name a price or a currency **in words**, and no substitution touches
+them: `price.cur`, `meta.description`, `meta.services.description`, `faq.a1`,
+`price.note`, `home.priceNote`. They are listed in a comment in `config.py`.
+Change a price and you change those too.
+
+`faq.q2` deliberately names **no** figure — it asks "What does the starting
+price actually include?" — so it survives the next change untouched.
+
+## The English in the markup is not decoration
+
+The text inside a `data-i18n` element is the **English fallback**. It is what
+ships in the HTML, what a search engine indexes, and what a visitor sees if the
+translation layer never runs. It must say the same thing as the `en` string.
+
+It had drifted in fifteen places — the move to dinars updated `en` and left the
+FAQ quoting dollar prices, and the home page had shipped "Development" while the runtime
+showed "Web development" since the split. `node _src/check_i18n.js` now compares
+every pure-text `data-i18n` element against its `en` string and fails on a
+mismatch, so the two cannot separate again.
 
 ## Languages
 
-English is the default. Arabic switches the whole layout to right-to-left.
+English is the default. Arabic and Sorani Kurdish both switch the whole layout
+to right-to-left.
 
-Sorani Kurdish is set to **left-to-right**, as you asked. Kurdish is written in
-Arabic script and normally runs right-to-left — if you'd rather it did, change one
+Kurdish was left-to-right until 2026-08-20 and was changed on request. It is one
 value in `js/translations.js`:
 
 ```js
-ckb: { label: "کوردی", dir: "ltr",   ← change to "rtl"
+ckb: { label: "کوردی", dir: "rtl",   ← "ltr" to put it back
 ```
+
+If you change it, change the matching expectation in `_src/probe.js` too.
+
+**Never write a number range with a dash in Arabic or Kurdish copy.** An en dash
+between two European digits is a bidi neutral: "2 – 5" renders as "5 – 2", and a
+`<select>` option cannot carry a reliable `dir`. Write it in words, or put the
+value in its own `dir="ltr"` element in the markup. `node _src/check_i18n.js`
+scans for this and fails.
 
 The visitor's choice is remembered in their browser for next time.
 
@@ -229,11 +340,20 @@ and an open "something else". That list also drives the Project type dropdown
 in the brief form, so keep the two in step if you edit one
 (`builds.b1`–`b8` and `form.type1`–`type9`).
 
-**Process** answers "what happens if I message them" in four steps. **FAQ**
-answers the five questions that actually stop people getting in touch: how
-long, how much, do I own it, can you fix my current site, do you work abroad.
-Both are worth keeping accurate — they are doing the job that testimonials
-would do, honestly, until you have client work you can show.
+**Services** also carries the **pricing** block: three priced cards, cheapest
+first (portfolios, digital menus, business websites), the turnaround note, twelve capabilities
+listed honestly as *Custom quote*, and six things that move the number. A
+compact three-row preview of the same figures sits on the home page. Both are
+built from `_src/config.py`, so they cannot disagree.
+
+**Process** answers "what happens if I message them" in four steps, each with
+three specifics under it — scope and price agreed first, the client reviews the
+design, it is tested on phones and desktop, the files are handed over. **FAQ**
+answers the ten questions that actually stop people getting in touch: how much,
+what the starting price includes, how long, when the clock starts, the three languages, ownership,
+redesigns, ordering and booking, what we need before starting, and clients
+outside Iraq. Both are worth keeping accurate — they are doing the job that
+testimonials would do, honestly, until you have client work you can show.
 
 The FAQ is built from native `<details>` elements, so it opens and closes with
 no JavaScript at all and works for keyboard and screen-reader users for free.

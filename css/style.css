@@ -448,6 +448,14 @@ html[lang="ar"] .card__k,html[lang="ckb"] .card__k{letter-spacing:.02em;text-tra
 .build:hover .build__see,.build:focus-visible .build__see{opacity:1;transform:translateX(2px)}
 [dir="rtl"] .build:hover .build__see{transform:translateX(-2px)}
 @media (hover:none){.build__see{opacity:.8}}
+/* At 320px the tile's padding plus the label plus this 16px arrow came to a
+   few pixels more than the viewport, and the arrow was what stuck out. Below
+   360 the arrow is decoration the tile can do without — the whole tile is the
+   button and it still says "see example" to a screen reader through its text. */
+@media (max-width:359px){
+  .build__see{display:none}
+  .build{padding:1rem}
+}
 
 .lb{position:fixed;inset:0;z-index:160;display:grid;place-items:center;padding:clamp(.75rem,3vw,2rem)}
 .lb[hidden]{display:none}
@@ -722,16 +730,20 @@ html[lang="ar"] .foot__tag,html[lang="ckb"] .foot__tag{
 
 /* ── 15. Motion ────────────────────────────────────────── */
 
-/* 15a. Hero load choreography — plays once, on arrival */
-.js .up{animation:upIn .85s var(--e) var(--w,0s) both}
+/* 15a. Hero load choreography — plays once, on arrival.
+   Shortened 2026-08-20. The choreography is the same, the wait is not: the
+   headline is fully readable by ~0.55s and the buttons by ~0.72s, instead of
+   the ~1.1s it used to take. An opening animation may not be the reason a
+   visitor cannot read the offer yet. */
+.js .up{animation:upIn .55s var(--e) var(--w,0s) both}
 @keyframes upIn{
   from{opacity:0;transform:translateY(26px)}
   to{opacity:1;transform:none}
 }
 
 /* the headline wipes upward rather than simply fading in */
-.js .hero__l1{animation:lineIn .95s var(--e) .14s both}
-.js .hero__l2{animation:lineIn .95s var(--e) .26s both}
+.js .hero__l1{animation:lineIn .58s var(--e) .06s both}
+.js .hero__l2{animation:lineIn .58s var(--e) .15s both}
 @keyframes lineIn{
   from{opacity:0;transform:translateY(30px);clip-path:inset(0 0 100% 0)}
   to{opacity:1;transform:none;clip-path:inset(0 0 -18% 0)}
@@ -1092,3 +1104,268 @@ html.js .head > .h2.in::after { transform: scaleX(1); }
 /* 6. Interior pages open with the same rise the home page uses, so arriving
       on services.html does not feel flatter than arriving on index.html. */
 .band > .shell > .head { position: relative; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PRICING · TURNAROUND · BRIEF FORM
+   Added 2026-08-20. Same rule as everything above it: one charcoal ground,
+   one orange accent, everything else greyscale. Nothing here introduces a
+   second accent colour, a new radius or a new font.
+
+   Every money and duration figure sits in its own element carrying dir="ltr",
+   because an en dash between two European digits is a bidi neutral: inside an
+   RTL line "2–4" resolves as "4–2" and "$200–$500+" comes apart. Isolating
+   the value is the fix; never reverse it with a transform.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── the price on a card ────────────────────────────────────────────────── */
+.price__tag {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: .45rem .6rem;
+  margin: -.15rem 0 .9rem;
+}
+.price__from {
+  font-family: var(--mono); font-weight: 500; font-size: .68rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3);
+}
+html[lang="ar"] .price__from, html[lang="ckb"] .price__from {
+  font-family: var(--font); letter-spacing: 0; text-transform: none; font-size: .82rem;
+}
+.price__amt {
+  font-size: clamp(1.9rem, 1.3rem + 1.4vw, 2.4rem); font-weight: 800;
+  letter-spacing: -.035em; line-height: 1; color: var(--fg);
+}
+.price .card__p { color: var(--fg-3); }
+
+/* the range under the business card — a footnote, not a second headline */
+.price__more {
+  margin-top: 1.25rem; padding-top: 1.1rem;
+  border-top: 1px dashed var(--line-2);
+  font-size: .85rem; line-height: 1.6; color: var(--fg-3);
+}
+.price__rng {
+  display: inline-block; margin-inline: .3em;
+  font-weight: 800; color: var(--fg); letter-spacing: -.02em;
+}
+.price__more2 { display: block; margin-top: .3rem; }
+
+.price__foot {
+  max-width: 46rem; margin: 2rem auto 0; text-align: center;
+  font-size: .9rem; line-height: 1.7; color: var(--fg-3);
+}
+.price__foot b { color: var(--fg); font-weight: 700; }
+
+.price__act {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: .8rem;
+  margin-top: clamp(2.25rem, 4vw, 3.25rem);
+}
+
+/* ── the turnaround note ────────────────────────────────────────────────── */
+.note {
+  display: flex; align-items: flex-start; gap: 1.1rem;
+  max-width: 46rem; margin: clamp(2.5rem, 4.5vw, 3.5rem) auto 0;
+  padding: clamp(1.4rem, 2.6vw, 1.9rem);
+  background: var(--surface); border: 1px solid var(--line);
+  border-inline-start: 2px solid var(--accent);
+  border-radius: var(--r-lg);
+}
+.note__ico {
+  display: grid; place-items: center; flex: none;
+  width: 38px; height: 38px; border-radius: var(--r);
+  background: var(--accent-dim);
+}
+.note__ico svg {
+  width: 19px; height: 19px; fill: none; stroke: var(--accent);
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+}
+.note__badge {
+  display: flex; align-items: baseline; gap: .4rem;
+  margin-bottom: .35rem;
+  font-size: .8rem; color: var(--fg-3);
+}
+.note__badge b {
+  font-size: 1.5rem; font-weight: 800; letter-spacing: -.03em;
+  line-height: 1; color: var(--accent);
+}
+.note__h { font-size: 1.02rem; font-weight: 700; letter-spacing: -.02em; margin-bottom: .4rem; }
+.note__p { font-size: .92rem; line-height: 1.68; color: var(--fg-2); }
+.note__p--2 { margin-top: .6rem; color: var(--fg-3); }
+
+/* ── priced-per-project list ───────────────────────────────────────────── */
+.quotes { display: grid; grid-template-columns: repeat(2, 1fr); gap: .7rem; }
+.quote {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: .95rem 1.15rem;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r);
+  transition: border-color .25s var(--e), background-color .25s var(--e);
+}
+.quote:hover { border-color: var(--line-2); background: var(--surface-hi); }
+.quote > span { font-size: .93rem; font-weight: 600; color: var(--fg); line-height: 1.35; }
+.quote em {
+  flex: none; font-style: normal;
+  font-family: var(--mono); font-weight: 500; font-size: .64rem;
+  letter-spacing: .09em; text-transform: uppercase;
+  color: var(--accent); padding: .3rem .55rem;
+  background: var(--accent-dim); border-radius: 99px;
+}
+html[lang="ar"] .quote em, html[lang="ckb"] .quote em {
+  font-family: var(--font); letter-spacing: 0; text-transform: none; font-size: .74rem;
+}
+
+/* ── what moves the number ─────────────────────────────────────────────── */
+.deps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem 2rem; }
+.dep {
+  position: relative; padding-top: 1.1rem;
+  border-top: 1px solid var(--line-2);
+}
+.dep b {
+  display: block; margin-bottom: .4rem;
+  font-size: .98rem; font-weight: 700; letter-spacing: -.02em; color: var(--fg);
+}
+.dep span { display: block; font-size: .88rem; line-height: 1.6; color: var(--fg-3); }
+
+/* ── home: the three starting prices as rows ───────────────────────────── */
+.plist { display: grid; gap: .7rem; max-width: 52rem; margin-inline: auto; }
+.prow__a {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  gap: .3rem 1.5rem; padding: 1.15rem 1.35rem;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r);
+  transition: border-color .25s var(--e), background-color .25s var(--e),
+              transform .25s var(--e);
+}
+.prow__a:hover { border-color: var(--line-2); background: var(--surface-hi); transform: translateY(-2px); }
+.prow__t { font-size: 1.02rem; font-weight: 700; letter-spacing: -.02em; color: var(--fg); }
+.prow__d { grid-column: 1; font-size: .86rem; line-height: 1.55; color: var(--fg-3); }
+.prow__p {
+  grid-row: 1 / span 2; grid-column: 2;
+  display: flex; flex-direction: column; align-items: flex-end; gap: .1rem;
+  text-align: end;
+}
+[dir="rtl"] .prow__p { align-items: flex-start; }
+.prow__p .price__amt { font-size: 1.6rem; }
+
+/* ── home: what the client is left holding ─────────────────────────────── */
+.gets {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem 1.8rem;
+  margin-top: clamp(2.5rem, 4.5vw, 3.5rem);
+  padding-top: clamp(2rem, 3.5vw, 2.75rem);
+  border-top: 1px solid var(--line);
+}
+.get b {
+  display: block; margin-bottom: .35rem;
+  font-size: .94rem; font-weight: 700; letter-spacing: -.015em; color: var(--fg);
+}
+.get span { display: block; font-size: .85rem; line-height: 1.6; color: var(--fg-3); }
+
+/* ── the skip-to-prices jump ───────────────────────────────────────────── */
+.head__jump { margin-top: 1.1rem; }
+.jump {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-size: .88rem; font-weight: 600; color: var(--accent);
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s var(--e);
+}
+.jump:hover { border-bottom-color: currentColor; }
+.jump i { font-style: normal; transition: transform .2s var(--e); }
+.jump:hover i { transform: translateY(2px); }
+@media (prefers-reduced-motion: reduce) { .jump:hover i { transform: none; } }
+
+/* ── FAQ footer line ───────────────────────────────────────────────────── */
+.faq__foot {
+  max-width: 46rem; margin: 1.75rem auto 0; text-align: center;
+  font-size: .92rem; color: var(--fg-3);
+}
+.faq__foot a {
+  color: var(--accent); font-weight: 600;
+  border-bottom: 1px solid transparent; transition: border-color .2s var(--e);
+}
+.faq__foot a:hover { border-bottom-color: currentColor; }
+
+/* ── brief form: required marks, checkbox groups, errors ───────────────── */
+.f__req { color: var(--accent); font-weight: 700; margin-inline-start: .15em; }
+
+.f__err {
+  display: none; margin-top: .1rem;
+  font-size: .8rem; line-height: 1.4; color: #F0857A;
+}
+.f__err.on { display: block; }
+
+.fs { border: 0; }
+.fs legend {
+  padding: 0 0 .55rem;
+  font-size: .8rem; font-weight: 600; color: var(--fg-3); letter-spacing: -.005em;
+}
+.checks { display: flex; flex-wrap: wrap; gap: .5rem; }
+.chk {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .6rem .9rem; min-height: 44px;
+  background: var(--deep); border: 1px solid var(--line);
+  border-radius: 99px; cursor: pointer;
+  font-size: .87rem; color: var(--fg-2);
+  transition: border-color .2s var(--e), color .2s var(--e), background-color .2s var(--e);
+}
+.chk:hover { border-color: var(--line-2); color: var(--fg); }
+/* The selector has to out-specify `.f input`, which sets width:100%,
+   min-height:48px and 1rem of padding on every control inside a field. Without
+   the reset the checkbox rendered as a 34x48 slab and the pill grew to 69px
+   tall — measured, not guessed. */
+.f .chk input, .chk input {
+  appearance: none; -webkit-appearance: none;
+  width: 17px; height: 17px; min-height: 0; flex: none;
+  margin: 0; padding: 0;
+  border: 1px solid var(--line-2); border-radius: 5px;
+  background: transparent; cursor: pointer;
+  transition: background-color .18s var(--e), border-color .18s var(--e);
+}
+.f .chk input:checked, .chk input:checked {
+  background: var(--accent) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23180A02' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'><path d='m5 12.5 4.5 4.5L19 7'/></svg>") center/11px no-repeat;
+  border-color: var(--accent);
+}
+.chk:has(input:checked) { border-color: var(--accent); color: var(--fg); background: var(--accent-dim); }
+.chk input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.brief__send { align-items: center; }
+/* .btn sets no gap, so the icon would sit against the first letter */
+.btn--wa { gap: .55em; }
+.btn--wa .btn__wa { width: 17px; height: 17px; flex: none; }
+.brief__live { display: block; margin-top: .5rem; font-size: .84rem; color: #F0857A; }
+.brief__live:empty { display: none; }
+
+/* ── responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+  .deps { grid-template-columns: repeat(2, 1fr); }
+  .gets { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .quotes { grid-template-columns: 1fr; }
+  .prow__a { grid-template-columns: 1fr; }
+  .prow__p {
+    grid-row: auto; grid-column: 1;
+    flex-direction: row; align-items: baseline; gap: .5rem;
+    margin-top: .5rem; text-align: start;
+  }
+  [dir="rtl"] .prow__p { align-items: baseline; }
+  .prow__p .price__amt { font-size: 1.4rem; }
+  .note { flex-direction: column; gap: .85rem; }
+  .price__act .btn { flex: 1 1 100%; }
+}
+@media (max-width: 560px) {
+  .deps { grid-template-columns: 1fr; }
+  .gets { grid-template-columns: 1fr; gap: 1.15rem; }
+  .quote { flex-wrap: wrap; gap: .5rem; }
+}
+
+/* ── the currency label ─────────────────────────────────────────────────────
+   Added 2026-08-21 with the move from dollars to dinars. It sits OUTSIDE the
+   number's dir="ltr" isolate, so bidi places it after the figure in English
+   and on the correct side in Arabic and Kurdish without any RTL override.
+   Smaller and quieter than the amount: the figure is what a visitor scans for,
+   and "IQD" repeated three times should not compete with it. */
+.price__cur {
+  font-size: .4em; font-weight: 700; letter-spacing: .04em;
+  color: var(--fg-3); white-space: nowrap;
+}
+.price__rng .price__cur { font-size: .82em; }
+/* five-digit figures are far wider than "$50" was */
+.price__amt { font-size: clamp(1.5rem, 1rem + 1.5vw, 2.05rem); }
+.prow__p .price__amt { font-size: clamp(1.25rem, 1rem + .7vw, 1.5rem); }

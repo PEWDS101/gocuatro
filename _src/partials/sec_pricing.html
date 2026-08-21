@@ -1,0 +1,187 @@
+<!-- ═══════════ PRICING ═══════════
+     Every figure comes from _src/config.py — there is no price typed into this
+     file. The word "Starting at" is a translated string and always sits in
+     front of the amount, so no card can read as a fixed total.
+
+     The NUMBER carries dir="ltr" so "225,000–750,000" cannot be re-ordered
+     inside an Arabic or Kurdish line; the currency label sits OUTSIDE that
+     isolate so bidi puts it on the right side for each language. -->
+<section class="band band--alt" id="pricing">
+  <div class="shell">
+
+    <header class="head">
+      <p class="brow rise" data-i18n="price.eyebrow">Pricing</p>
+      <h2 class="h2 rise" style="--w:.05s" data-i18n="price.title">Starting prices, in the open.</h2>
+      <p class="head__p rise" style="--w:.1s" data-i18n="price.sub">
+        What a project starts at, and what moves it up. Tell us what you need and you
+        get one figure for the whole job before anything begins.
+      </p>
+    </header>
+
+    <div class="grid grid--3 prices">
+
+      <article class="card card--tall price rise" style="--w:.05s">
+        <span class="card__ico">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="7" width="19" height="13" rx="2"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7"/></svg>
+        </span>
+        <h3 class="card__h" data-i18n="price.portT">Portfolio websites</h3>
+        <p class="price__tag">
+          <span class="price__from" data-i18n="price.from">Starting at</span>
+          <b class="price__amt"><span dir="ltr">{{PRICE_PORTFOLIO_FMT}}</span> <span class="price__cur" data-i18n="price.cur">IQD</span></b>
+        </p>
+        <p class="card__p" data-i18n="price.portFor">
+          For photographers, designers, freelancers, artists and personal brands.
+        </p>
+        <ul class="ticks">
+          <li data-i18n="price.portA">Project galleries that load fast on a phone</li>
+          <li data-i18n="price.portB">An About section and the services you offer</li>
+          <li data-i18n="price.portC">Direct links to WhatsApp, Instagram and email</li>
+        </ul>
+      </article>
+
+      <article class="card card--tall price rise" style="--w:.1s">
+        <span class="card__ico">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v6a2.5 2.5 0 0 0 5 0V3"/><path d="M8.5 11v10"/><path d="M17.5 3c-1.6 1.4-2.3 3.4-2.3 5.3 0 1.6.8 2.7 2.3 2.7v10"/></svg>
+        </span>
+        <h3 class="card__h" data-i18n="price.menuT">Digital menus</h3>
+        <p class="price__tag">
+          <span class="price__from" data-i18n="price.from">Starting at</span>
+          <b class="price__amt"><span dir="ltr">{{PRICE_MENU_FMT}}</span> <span class="price__cur" data-i18n="price.cur">IQD</span></b>
+        </p>
+        <p class="card__p" data-i18n="price.menuFor">
+          For restaurants, cafés and food businesses.
+        </p>
+        <ul class="ticks">
+          <li data-i18n="price.menuA">Categories, dishes and prices</li>
+          <li data-i18n="price.menuB">Photos of the food, contact details, opening hours</li>
+          <li data-i18n="price.menuC">A WhatsApp link that opens an order, ready to send</li>
+        </ul>
+      </article>
+
+      <article class="card card--tall price rise" style="--w:.15s">
+        <span class="card__ico">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/></svg>
+        </span>
+        <h3 class="card__h" data-i18n="price.bizT">Business websites</h3>
+        <p class="price__tag">
+          <span class="price__from" data-i18n="price.from">Starting at</span>
+          <b class="price__amt"><span dir="ltr">{{PRICE_BUSINESS_FMT}}</span> <span class="price__cur" data-i18n="price.cur">IQD</span></b>
+        </p>
+        <p class="card__p" data-i18n="price.bizFor">
+          For companies, shops, clinics, offices and service businesses.
+        </p>
+        <ul class="ticks">
+          <li data-i18n="price.bizA">Several pages, written around what you sell</li>
+          <li data-i18n="price.bizB">Arabic, Kurdish and English in one site</li>
+          <li data-i18n="price.bizC">Enquiry, WhatsApp, booking or quote actions on every page</li>
+        </ul>
+        <!-- The lead-in ends at a colon and the figure follows as its own
+             element, so no translation has to be written around a number
+             sitting mid-sentence. The trailing + carries "or more" visually;
+             price.bizNote2 says it in words as well. -->
+        <p class="price__more">
+          <span data-i18n="price.bizNote">Most larger business websites land in this range:</span>
+          <b class="price__rng"><span dir="ltr">{{PRICE_BUSINESS_FMT}}–{{PRICE_BUSINESS_HI_FMT}}+</span> <span class="price__cur" data-i18n="price.cur">IQD</span></b>
+          <span class="price__more2" data-i18n="price.bizNote2">More than that is normal too — it follows the number of pages, the languages, the content and the features you need.</span>
+        </p>
+      </article>
+
+    </div>
+
+    <p class="price__foot rise" style="--w:.2s" data-i18n="price.note">
+      Prices are in Iraqi dinars and every figure is a starting point, not a fixed total. You get one price for the whole project before any work begins.
+    </p>
+
+    <!-- ── turnaround ──────────────────────────────────────────────────
+         price.timeD is ONE string per language and is reused verbatim on the
+         process page and in the FAQ, so the promise can never be worded three
+         different ways. The condition ("once we have all the content …") is
+         inside the same sentence as the number, so the figure cannot be
+         quoted without it.
+
+         The badge repeats the figure as a value, isolated with dir="ltr" so
+         the en dash cannot re-order it inside an RTL line. -->
+    <div class="note rise" style="--w:.05s">
+      <span class="note__ico" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/></svg>
+      </span>
+      <div>
+        <p class="note__badge">
+          <b dir="ltr">{{DAYS_MIN}}–{{DAYS_MAX}}</b>
+          <span data-i18n="price.daysUnit">days</span>
+        </p>
+        <h3 class="note__h" data-i18n="price.timeT">How long it takes</h3>
+        <p class="note__p" data-i18n="price.timeD">
+          Most menus, portfolios and starter business websites are finished in 2 to 4
+          days, counted from the moment we have all the content and project details
+          from you. Larger or custom websites get their own timeline with the
+          quotation.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── priced per project ─────────────────────────────────────────── -->
+    <header class="head head--mini">
+      <p class="brow rise" data-i18n="price.quoteEyebrow">Priced per project</p>
+      <h2 class="h3 rise" style="--w:.05s" data-i18n="price.quoteT">Custom quote</h2>
+      <p class="head__p rise" style="--w:.1s" data-i18n="price.quoteSub">
+        These depend too much on what you need for a single number to be honest.
+        Describe it and you get a figure back, not a price list.
+      </p>
+    </header>
+
+    <ul class="quotes">
+      <li class="quote rise" style="--w:.03s"><span data-i18n="price.q1">Landing pages</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.05s"><span data-i18n="price.q2">Product catalogues</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.07s"><span data-i18n="price.q3">WhatsApp ordering &amp; quotation flows</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.09s"><span data-i18n="price.q4">Online stores</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.11s"><span data-i18n="price.q5">Appointment &amp; booking websites</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.13s"><span data-i18n="price.q6">Redesign of an existing site</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.15s"><span data-i18n="price.q7">Property &amp; real-estate websites</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.17s"><span data-i18n="price.q8">School &amp; institute websites</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.19s"><span data-i18n="price.q9">Event websites</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.21s"><span data-i18n="price.q10">Multilingual website setup</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.23s"><span data-i18n="price.q11">Custom calculators &amp; interactive tools</span><em data-i18n="price.custom">Custom quote</em></li>
+      <li class="quote rise" style="--w:.25s"><span data-i18n="price.q12">Maintenance &amp; content updates</span><em data-i18n="price.custom">Custom quote</em></li>
+    </ul>
+
+    <!-- ── what moves the price ───────────────────────────────────────── -->
+    <header class="head head--mini">
+      <p class="brow rise" data-i18n="price.depEyebrow">What moves the number</p>
+      <h2 class="h3 rise" style="--w:.05s" data-i18n="price.depT">Why two websites cost different amounts.</h2>
+    </header>
+
+    <ul class="deps">
+      <li class="dep rise" style="--w:.04s">
+        <b data-i18n="price.dep1t">Number of pages</b>
+        <span data-i18n="price.dep1d">One page reads differently from twelve, and each one has to be written and laid out.</span>
+      </li>
+      <li class="dep rise" style="--w:.08s">
+        <b data-i18n="price.dep2t">Languages</b>
+        <span data-i18n="price.dep2d">Arabic and Kurdish need right-to-left layout and their own typography, not a translated copy.</span>
+      </li>
+      <li class="dep rise" style="--w:.12s">
+        <b data-i18n="price.dep3t">Content readiness</b>
+        <span data-i18n="price.dep3d">Text and photos ready to go is the cheapest and fastest path. Writing and sourcing them takes longer.</span>
+      </li>
+      <li class="dep rise" style="--w:.16s">
+        <b data-i18n="price.dep4t">Selling or accounts</b>
+        <span data-i18n="price.dep4d">A cart, payments, stock or logins mean a back end, and a back end is real work.</span>
+      </li>
+      <li class="dep rise" style="--w:.2s">
+        <b data-i18n="price.dep5t">Calculators, booking, ordering</b>
+        <span data-i18n="price.dep5d">Anything a visitor interacts with is built and tested from scratch, so it behaves exactly as your business does.</span>
+      </li>
+      <li class="dep rise" style="--w:.24s">
+        <b data-i18n="price.dep6t">Integrations</b>
+        <span data-i18n="price.dep6d">Maps, analytics, a delivery service, a booking system — each one connects to something outside the site.</span>
+      </li>
+    </ul>
+
+    <div class="price__act rise" style="--w:.1s">
+      <a class="btn btn--lg" href="contact.html" data-i18n="price.cta">Ask for a quote</a>
+      <a class="btn btn--ghost btn--lg" href="https://wa.me/{{WA_NUMBER}}" target="_blank" rel="noopener" data-i18n="cta.wa">Message us on WhatsApp</a>
+    </div>
+
+  </div>
+</section>

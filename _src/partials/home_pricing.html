@@ -1,0 +1,63 @@
+<!-- ═══════════ HOME · STARTING PRICES ═══════════
+     A three-line read of the same numbers, reusing the price.* strings so the
+     homepage can never disagree with services.html. Amounts come from
+     _src/config.py; "Starting at" is a translated label that always precedes
+     them. Deliberately compact — the cards, the custom-quote list and the
+     what-moves-the-number list all live on the services page. -->
+<section class="band band--alt" id="prices">
+  <div class="shell">
+
+    <header class="head">
+      <p class="brow rise" data-i18n="price.eyebrow">Pricing</p>
+      <h2 class="h2 rise" style="--w:.05s" data-i18n="home.priceTitle">No quote needed to know where it starts.</h2>
+      <p class="head__p rise" style="--w:.1s" data-i18n="home.priceSub">
+        Three common projects, with the figure they begin at. Everything else is quoted
+        for the job in front of us.
+      </p>
+    </header>
+
+    <ul class="plist">
+      <li class="prow rise" style="--w:.05s">
+        <a class="prow__a" href="services.html#pricing">
+          <span class="prow__t" data-i18n="price.portT">Portfolio websites</span>
+          <span class="prow__d" data-i18n="price.portFor">For photographers, designers, freelancers, artists and personal brands.</span>
+          <span class="prow__p">
+            <span class="price__from" data-i18n="price.from">Starting at</span>
+            <b class="price__amt"><span dir="ltr">{{PRICE_PORTFOLIO_FMT}}</span> <span class="price__cur" data-i18n="price.cur">IQD</span></b>
+          </span>
+        </a>
+      </li>
+      <li class="prow rise" style="--w:.1s">
+        <a class="prow__a" href="services.html#pricing">
+          <span class="prow__t" data-i18n="price.menuT">Digital menus</span>
+          <span class="prow__d" data-i18n="price.menuFor">For restaurants, cafés and food businesses.</span>
+          <span class="prow__p">
+            <span class="price__from" data-i18n="price.from">Starting at</span>
+            <b class="price__amt"><span dir="ltr">{{PRICE_MENU_FMT}}</span> <span class="price__cur" data-i18n="price.cur">IQD</span></b>
+          </span>
+        </a>
+      </li>
+      <li class="prow rise" style="--w:.15s">
+        <a class="prow__a" href="services.html#pricing">
+          <span class="prow__t" data-i18n="price.bizT">Business websites</span>
+          <span class="prow__d" data-i18n="price.bizFor">For companies, shops, clinics, offices and service businesses.</span>
+          <span class="prow__p">
+            <span class="price__from" data-i18n="price.from">Starting at</span>
+            <b class="price__amt"><span dir="ltr">{{PRICE_BUSINESS_FMT}}</span> <span class="price__cur" data-i18n="price.cur">IQD</span></b>
+          </span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="price__foot rise" style="--w:.2s">
+      <span data-i18n="home.priceNote">Starting prices in Iraqi dinars. Menus, portfolios and starter business sites are usually finished in</span>
+      <b dir="ltr">{{DAYS_MIN}}–{{DAYS_MAX}}</b>
+      <span data-i18n="home.priceNote2">days once we have your content and details.</span>
+    </p>
+
+    <div class="price__act rise" style="--w:.24s">
+      <a class="btn btn--ghost btn--lg" href="services.html#pricing" data-i18n="home.priceLink">See full pricing</a>
+    </div>
+
+  </div>
+</section>

@@ -6,8 +6,12 @@
 (function () {
   'use strict';
 
-  var MAIL_TO   = 'GoCuatro4@gmail.com';
-  var MAIL_BASE = 'https://mail.google.com/mail/?view=cm&fs=1&to=';
+  /* Business values come from js/config.js, which _src/build.py generates from
+     _src/config.py. The fallbacks below only ever apply if config.js failed to
+     load — they must stay in step with it, but they are not the source. */
+  var CFG       = window.GC_CONFIG || {};
+  var MAIL_TO   = CFG.EMAIL || 'GoCuatro4@gmail.com';
+  var WA_NUMBER = CFG.WA_NUMBER || '9647750775533';
   var KEY       = 'gocuatro:lang';
   var FALLBACK  = 'en';
 
@@ -17,6 +21,22 @@
 
   /* only now may the stylesheet hide anything for animation */
   document.documentElement.classList.add('js');
+
+  /* …and the escape hatch is armed in the same breath.
+     Adding .js is what lets the stylesheet set .rise{opacity:0}. If anything
+     below this line throws — a browser without some API, a bad edit, a blocked
+     script — nothing would ever add .in and the page would sit blank. This
+     timer is registered BEFORE any of that code runs, so it survives a throw
+     anywhere later in the file. It costs the animation; it never costs the
+     content. Nothing to do in scroll-driven mode: there .rise is already
+     visible and CSS scrubs it. */
+  window.setTimeout(function () {
+    var de = document.documentElement;
+    if (de.classList.contains('sda')) return;
+    if (document.querySelector('.rise.in')) return;
+    var shy = document.querySelectorAll('.rise');
+    for (var i = 0; i < shy.length; i++) shy[i].classList.add('in');
+  }, 1500);
 
   /* Scroll-driven animation support (Chrome/Edge/Safari 26+). Where it exists
      the reveals are handed to the compositor and scrub with the scroll; where
@@ -65,6 +85,12 @@
 
     var title = t('meta.title');
     if (title) document.title = title;
+
+    /* og:locale follows the language too. The canonical and og:url stay put:
+       all three languages live on the same URL, so they describe the URL, not
+       the language currently painted on it. */
+    var ogl = document.querySelector('meta[property="og:locale"]');
+    if (ogl) ogl.setAttribute('content', code);
 
     /* the lightbox writes its own title/caption, so redraw it if it's open */
     if (lb && !lb.hidden) paintExample(exAt);
@@ -189,12 +215,8 @@
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
     shy.forEach(function (el) { eye.observe(el); });
-
-    /* failsafe: if the observer has produced nothing at all, show everything.
-       Costs the animation, never costs the content. */
-    setTimeout(function () {
-      if (!$('.rise.in')) shy.forEach(function (el) { el.classList.add('in'); });
-    }, 1500);
+    /* the failsafe for this lives at the top of the file, armed before any of
+       this could throw — see "the escape hatch is armed in the same breath" */
   }
 
 
@@ -250,45 +272,117 @@
   });
 
 
-  /* ── 8. Brief → pre-filled Gmail ──────────────────────── */
+  /* ── 8. Brief → a WhatsApp message you still have to send ──
+     There is no server behind this site. The form assembles what was typed
+     into one plain-text brief, URL-encodes it and opens WhatsApp (or an
+     ordinary mail app) with it written out. NOTHING is transmitted before the
+     visitor presses the button, and nothing is transmitted by us at all — the
+     visitor still presses send in WhatsApp.
+
+     Validation is our own, not the browser's: novalidate is on the form so the
+     three required fields can be reported in the page's own language and
+     announced through one live region, instead of a native bubble that is
+     always in the browser UI language and disappears on the next click. */
   var form = $('#brief');
 
   if (form) {
+    var live = $('#briefLive');
+    var REQUIRED = [
+      ['name',    'form.errName'],
+      ['contact', 'form.errContact'],
+      ['message', 'form.errMessage']
+    ];
+
+    function checked(el) {
+      return $$('input[name="' + el + '"]:checked', form)
+        .map(function (b) { return b.value; });
+    }
+
+    function mark(el, bad) {
+      el.classList.toggle('bad', bad);
+      el.setAttribute('aria-invalid', bad ? 'true' : 'false');
+      var err = document.getElementById('e-' + el.id.replace(/^f-/, ''));
+      if (err) err.classList.toggle('on', bad);
+    }
+
+    /* -> true when everything required is filled in. Moves focus to the first
+       empty field and says how many are missing, so a screen-reader user is
+       told what happened rather than left on a button that did nothing. */
+    function valid() {
+      var first = null, missing = 0;
+      REQUIRED.forEach(function (pair) {
+        var el = form.elements[pair[0]];
+        if (!el) return;
+        var empty = !el.value.trim();
+        mark(el, empty);
+        if (empty) { missing++; if (!first) first = el; }
+      });
+      if (live) live.textContent = missing ? t('form.errSummary') : '';
+      if (first) first.focus();
+      return !missing;
+    }
+
+    /* One plain-text brief, in whatever language the visitor is reading. Empty
+       optional answers are dropped rather than sent as blank lines. */
+    function compose() {
+      var f = form.elements;
+      var langs = checked('langs');
+      var feats = checked('feats');
+      var pick = function (sel) {
+        return sel.options[sel.selectedIndex].textContent.trim();
+      };
+      var rows = [
+        [t('form.name'),     f.name.value.trim()],
+        [t('form.contact'),  f.contact.value.trim()],
+        [t('form.type'),     pick(f.type)],
+        [t('form.pages'),    pick(f.pages)],
+        [t('form.langs'),    langs.join(', ')],
+        [t('form.feats'),    feats.join(', ')],
+        [t('form.url'),      f.url.value.trim()],
+        [t('form.deadline'), f.when.value.trim()]
+      ];
+
+      var out = t('form.briefTitle') + '\n\n';
+      rows.forEach(function (r) { if (r[1]) out += r[0] + ': ' + r[1] + '\n'; });
+      out += '\n' + t('form.message') + ':\n' + f.message.value.trim() + '\n';
+      return out;
+    }
+
+    /* wa.me tolerates a long ?text=, but a runaway paste should not produce a
+       URL a browser or the app quietly truncates in the middle of a word. */
+    function clamp(s) {
+      return s.length > 1600 ? s.slice(0, 1600) + '…' : s;
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-
-      var f = form.elements;
-      var name = f.name.value.trim();
-      var mail = f.email.value.trim();
-      var kind = f.type.options[f.type.selectedIndex].textContent.trim();
-      var note = f.message.value.trim();
-
-      var bad = false;
-      [['name', name], ['email', mail], ['message', note]].forEach(function (pair) {
-        var el = f[pair[0]];
-        var empty = !pair[1];
-        el.classList.toggle('bad', empty);
-        if (empty && !bad) { el.focus(); bad = true; }
-      });
-      if (bad) return;
-
-      var subject = t('form.subject') + ' — ' + name;
-      var body =
-        t('form.name')    + ': ' + name + '\n' +
-        t('form.email')   + ': ' + mail + '\n' +
-        t('form.type')    + ': ' + kind + '\n\n' +
-        t('form.message') + ':\n' + note + '\n';
-
+      if (!valid()) return;
+      if (live) live.textContent = t('form.sending');
       window.open(
-        MAIL_BASE + encodeURIComponent(MAIL_TO) +
-        '&su='   + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(body),
+        'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(clamp(compose())),
         '_blank', 'noopener'
       );
     });
 
+    /* The fallback is a plain mailto:, so it opens whatever mail app the
+       visitor actually uses — not Gmail specifically. */
+    var mailBtn = $('#briefMail');
+    if (mailBtn) {
+      mailBtn.addEventListener('click', function () {
+        if (!valid()) return;
+        if (live) live.textContent = t('form.sending');
+        window.location.href =
+          'mailto:' + encodeURIComponent(MAIL_TO) +
+          '?subject=' + encodeURIComponent(t('form.subject') + ' — ' + form.elements.name.value.trim()) +
+          '&body=' + encodeURIComponent(clamp(compose()));
+      });
+    }
+
     $$('input, textarea', form).forEach(function (el) {
-      el.addEventListener('input', function () { el.classList.remove('bad'); });
+      el.addEventListener('input', function () {
+        if (el.classList.contains('bad')) mark(el, false);
+        if (live) live.textContent = '';
+      });
     });
   }
 

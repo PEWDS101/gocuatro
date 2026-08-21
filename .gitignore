@@ -19,3 +19,6 @@ desktop.ini
 
 # audit screenshots — regenerated on demand by _src/probe.js and shot.js
 _audit/
+
+# Python bytecode from _src/build.py
+_src/__pycache__/

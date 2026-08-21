@@ -7,11 +7,26 @@
 <meta name="description" data-i18n-attr="content:meta.process.description" content="How a GoCuatro project runs, from the first conversation to launch and after.">
 <meta name="theme-color" content="#131619">
 
+<!-- Canonical and og:url are absolute and page-specific, built from SITE in
+     _src/config.py. There is deliberately NO hreflang: all three languages are
+     switched by JavaScript on the same URL, so a per-language link would point
+     at a page whose content changes under the crawler. See CHANGES.md. -->
+<link rel="canonical" href="https://gocuatro.com/process.html">
+
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="GoCuatro">
+<meta property="og:locale" content="en">
+<meta property="og:url" content="https://gocuatro.com/process.html">
 <meta property="og:title" content="How GoCuatro works">
-<meta property="og:description" content="Custom websites, hand-coded from scratch. Design. Build. Elevate.">
-<meta property="og:image" content="assets/logo-512.png">
+<meta property="og:description" data-i18n-attr="content:meta.process.description" content="How a GoCuatro project runs, from the first conversation to launch and after.">
+<meta property="og:image" content="https://gocuatro.com/assets/logo-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="GoCuatro">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How GoCuatro works">
+<meta name="twitter:description" data-i18n-attr="content:meta.process.description" content="How a GoCuatro project runs, from the first conversation to launch and after.">
+<meta name="twitter:image" content="https://gocuatro.com/assets/logo-512.png">
 
 <link rel="icon" href="assets/favicon-64.png" sizes="64x64">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -22,10 +37,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 
+<!-- Structured data. Everything in here is a fact the owner has confirmed:
+     no street address, no rating, no review count, no founding date, no
+     employee count. offers[].price is a STARTING price and is marked as such
+     with priceSpecification.minPrice — never a fixed price. The amounts
+     here are RAW integers in IQD: schema.org wants a bare number, so the
+     grouped "225,000" form used on the page must never reach this block. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
+  "@id": "https://gocuatro.com/#gocuatro",
   "name": "GoCuatro",
   "description": "Custom website design and development. Hand-coded from scratch — no templates.",
   "slogan": "Crafted. Not Assembled.",
@@ -35,11 +57,49 @@
   "areaServed": "Worldwide",
   "knowsLanguage": ["en", "ar", "ckb"],
   "url": "https://gocuatro.com/",
+  "image": "https://gocuatro.com/assets/logo-512.png",
+  "currenciesAccepted": "IQD",
   "sameAs": [
     "https://instagram.com/gocuatro",
     "https://www.facebook.com/profile.php?id=61593175900925",
     "https://www.threads.com/@gocuatro"
-  ]
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Websites",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "priceCurrency": "IQD",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "priceCurrency": "IQD",
+          "minPrice": "105000"
+        },
+        "itemOffered": { "@type": "Service", "name": "Digital menu website", "serviceType": "Web design" }
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "IQD",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "priceCurrency": "IQD",
+          "minPrice": "75000"
+        },
+        "itemOffered": { "@type": "Service", "name": "Portfolio website", "serviceType": "Web design" }
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "IQD",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "priceCurrency": "IQD",
+          "minPrice": "225000"
+        },
+        "itemOffered": { "@type": "Service", "name": "Business website", "serviceType": "Web design" }
+      }
+    ]
+  }
 }
 </script>
 </head>
@@ -109,7 +169,7 @@
 
     <header class="head head--start">
       <p class="brow rise" data-i18n="process.eyebrow">Process</p>
-      <h2 class="h2 rise" style="--w:.05s" data-i18n="process.title">What happens after you message us.</h2>
+      <h1 class="h2 rise" style="--w:.05s" data-i18n="process.title">What happens after you message us.</h1>
       <p class="head__p rise" style="--w:.1s" data-i18n="process.sub">
         No mystery, no drawn-out back and forth. Four steps from first message to live site.
       </p>
@@ -123,6 +183,11 @@
           We learn what the site has to do, who it's for, and what would make it worth
           the money. Costs you nothing.
         </p>
+        <ul class="ticks">
+          <li data-i18n="process.p1a">You tell us the business, the pages and the languages you need</li>
+          <li data-i18n="process.p1b">We come back with what it will cost and what is included</li>
+          <li data-i18n="process.p1c">Scope and price are agreed before anything is built</li>
+        </ul>
       </li>
       <li class="step rise" style="--w:.1s">
         <span class="step__n" aria-hidden="true">02</span>
@@ -131,6 +196,11 @@
           You see the layout and the look before a line of code is written, and we
           change it until you're happy.
         </p>
+        <ul class="ticks">
+          <li data-i18n="process.p2a">You review the design and say what should change</li>
+          <li data-i18n="process.p2b">Arabic and Kurdish are laid out right-to-left from the start, not bolted on</li>
+          <li data-i18n="process.p2c">Nothing is coded until you have approved how it looks</li>
+        </ul>
       </li>
       <li class="step rise" style="--w:.15s">
         <span class="step__n" aria-hidden="true">03</span>
@@ -139,6 +209,11 @@
           We hand-code it, test it on real phones and browsers, and tune it for speed
           and search engines.
         </p>
+        <ul class="ticks">
+          <li data-i18n="process.p3a">Tested on phones and on desktop, not only in a design file</li>
+          <li data-i18n="process.p3b">Every enquiry, WhatsApp, booking or order button is tried by hand</li>
+          <li data-i18n="process.p3c">Pages are structured so search engines can read what each one is about</li>
+        </ul>
       </li>
       <li class="step rise" style="--w:.2s">
         <span class="step__n" aria-hidden="true">04</span>
@@ -147,8 +222,43 @@
           We put it live, hand over every file, and show you how to keep it running
           on your own.
         </p>
+        <ul class="ticks">
+          <li data-i18n="process.p4a">The finished website files are handed over to you</li>
+          <li data-i18n="process.p4b">No builder subscription, and nothing locked to us</li>
+          <li data-i18n="process.p4c">We show you how to update it, or you can ask us to</li>
+        </ul>
       </li>
     </ol>
+
+    <!-- Same string as the pricing section and the FAQ — one sentence per
+         language, reused, so the promise cannot drift. -->
+    <div class="note rise" style="--w:.05s">
+      <span class="note__ico" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/></svg>
+      </span>
+      <div>
+        <p class="note__badge">
+          <b dir="ltr">2–4</b>
+          <span data-i18n="price.daysUnit">days</span>
+        </p>
+        <h3 class="note__h" data-i18n="process.timeT">When the clock starts</h3>
+        <p class="note__p" data-i18n="price.timeD">
+          Most menus, portfolios and starter business websites are finished in 2 to 4
+          days, counted from the moment we have all the content and project details
+          from you. Larger or custom websites get their own timeline with the
+          quotation.
+        </p>
+        <p class="note__p note__p--2" data-i18n="process.timeD2">
+          Before that point nothing is running — the days are build days, not waiting
+          days. What we need from you is listed in the FAQ, and it is short.
+        </p>
+      </div>
+    </div>
+
+    <div class="price__act rise" style="--w:.1s">
+      <a class="btn btn--lg" href="contact.html" data-i18n="process.cta">Start a project</a>
+      <a class="btn btn--ghost btn--lg" href="services.html#pricing" data-i18n="home.priceLink">See full pricing</a>
+    </div>
 
   </div>
 </section>
@@ -191,8 +301,9 @@
     </nav>
 
     <div class="foot__ico">
-      <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=GoCuatro4@gmail.com"
-         target="_blank" rel="noopener" data-i18n-attr="aria-label:contact.emailLabel" aria-label="Email">
+      <!-- A plain mailto:, so it opens whatever mail app the visitor actually
+           uses. The address comes from EMAIL in _src/config.py. -->
+      <a href="mailto:GoCuatro4@gmail.com" data-i18n-attr="aria-label:contact.emailLabel" aria-label="Email">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3 7.5 9 6 9-6"/></svg>
       </a>
       <button type="button" data-phone data-i18n-attr="aria-label:contact.phoneLabel" aria-label="Phone">
@@ -203,6 +314,9 @@
       </a>
       <a href="https://instagram.com/gocuatro" target="_blank" rel="noopener" aria-label="Instagram">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.threads.com/@gocuatro" target="_blank" rel="noopener" aria-label="Threads">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.1 11.5c-.1-.05-.2-.1-.3-.14-.18-3.3-1.98-5.2-5-5.22h-.04c-1.8 0-3.3.77-4.22 2.18l1.66 1.14c.69-1.05 1.77-1.27 2.56-1.27h.03c.98 0 1.72.28 2.2.85.35.4.58 1 .7 1.72a12.5 12.5 0 0 0-2.82-.14c-2.84.17-4.67 1.82-4.55 4.13.06 1.16.64 2.16 1.63 2.82.84.55 1.92.82 3.04.76 1.48-.08 2.64-.64 3.45-1.67.61-.78.99-1.79 1.17-3.06.72.43 1.25 1 1.55 1.69.5 1.17.53 3.09-1.03 4.65-1.37 1.37-3.02 1.96-5.5 1.98-2.76-.02-4.85-.9-6.2-2.62C4.19 16.65 3.53 14.5 3.5 12c.03-2.5.69-4.65 1.93-6.29C6.78 4 8.87 3.11 11.63 3.09c2.78.02 4.9.91 6.31 2.64.69.85 1.21 1.92 1.56 3.16l1.94-.52c-.42-1.53-1.08-2.86-1.98-3.96C17.65 2.2 15.02 1.06 11.64 1.04h-.01C8.25 1.06 5.65 2.21 3.9 4.46 2.35 6.46 1.55 9.24 1.52 12v.01c.03 2.75.83 5.53 2.38 7.53 1.75 2.25 4.35 3.4 7.73 3.42h.01c3.01-.02 5.13-.81 6.88-2.55 2.29-2.29 2.22-5.16 1.47-6.92-.54-1.26-1.57-2.29-2.98-2.99zm-4.71 5.02c-1.24.07-2.53-.49-2.6-1.67-.05-.88.62-1.86 2.68-1.98.24-.01.47-.02.7-.02.75 0 1.45.07 2.09.21-.24 2.98-1.64 3.4-2.87 3.46z" fill="currentColor" stroke="none"/></svg>
       </a>
     </div>
 
@@ -354,6 +468,7 @@
 <rect class="mdash" x="24" y="44" width="592" height="60" rx="8"/><rect class="mdash" x="24" y="116" width="284" height="150" rx="8"/><rect class="mdash" x="324" y="116" width="292" height="70" rx="8"/><rect class="mdash" x="324" y="198" width="292" height="68" rx="8"/><rect class="mdash" x="24" y="278" width="180" height="116" rx="8"/><rect class="mdash" x="216" y="278" width="180" height="116" rx="8"/><rect class="mdash" x="408" y="278" width="208" height="116" rx="8"/>
 <circle class="ma" cx="166" cy="191" r="26"/><path class="mplus" d="M166 179v24M154 191h24"/><rect class="mt" x="112" y="232" width="108" height="6" rx="3"/><rect class="mt" x="136" y="246" width="60" height="5" rx="2.5"/></svg></template>
 
+<script src="js/config.js"></script>
 <script src="js/translations.js"></script>
 <script src="js/main.js"></script>
 </body>
