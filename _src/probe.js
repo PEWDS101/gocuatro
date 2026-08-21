@@ -130,7 +130,7 @@ const fail = (m) => { fails++; console.log('  FAIL ' + m); };
       // THAT — checking the wrapper would now pass in English and fail in RTL
       // for a page that is in fact correct.
       const flipped = await page.evaluate(() =>
-        [...document.querySelectorAll('.price__amt, .price__rng, .note__badge b')]
+        [...document.querySelectorAll('.price__amt, .price__rng, .price__usd, .note__badge b')]
           .map(el => {
             const holder = [...el.querySelectorAll('*')]
               .find(c => /\d/.test(c.textContent) && !c.children.length) || el;
@@ -165,10 +165,62 @@ const fail = (m) => { fails++; console.log('  FAIL ' + m); };
           .filter(el => !el.querySelector('.price__cur')).length);
       if (noCur) fail(`${lang}: ${noCur} amount(s) with no currency label`);
 
-      // no dollar sign may survive anywhere on the page, in any language
-      const dollars = await page.evaluate(() =>
-        (document.body.innerText.match(/\$\s?\d/g) || []).length);
-      if (dollars) fail(`${lang}: ${dollars} dollar amount(s) still on the page`);
+      /* ── the second currency (2026-08-22) ─────────────────────────────
+         The dollar came back as a SECOND line under each dinar figure. It is
+         not a conversion: config's USD values are separately rounded price
+         points, so 75,000 IQD sits beside $49 while the stated 1:1500 rate
+         would give $50. Nothing here checks that the two reconcile, because
+         the page never claims they do — see the note in _src/config.py. */
+
+      // every dinar amount must carry a dollar line in the same row
+      const orphan = await page.evaluate(() =>
+        [...document.querySelectorAll('.price__amt')].filter(el => {
+          const row = el.closest('.price__tag, .prow__p');
+          return !row || !row.querySelector('.price__usd');
+        }).length);
+      if (orphan) fail(`${lang}: ${orphan} dinar amount(s) with no dollar line`);
+
+      const usd = await page.evaluate(() =>
+        [...document.querySelectorAll('.price__usd')].map(el => el.textContent.trim()));
+
+      const noSign = usd.filter(v => !v.startsWith('$'));
+      if (noSign.length)
+        fail(`${lang}: ${noSign.length} dollar figure(s) with no $ sign: ${noSign.join(' / ')}`);
+
+      // and the three singles must be exactly config's, same as the dinars.
+      // The business range carries two figures, so it is excluded here.
+      const usdOne = usd.filter(v => !v.includes('–'));
+      const wantUsd = [cfg.PRICE_PORTFOLIO_USD, cfg.PRICE_MENU_USD, cfg.PRICE_BUSINESS_USD];
+      if (norm(usdOne) !== norm(wantUsd))
+        fail(`${lang}: dollar prices ${usdOne.join(' / ')} are not config's ${wantUsd.join(', ')}`);
+
+      // the dollar ladder must climb with the dinar one
+      const usdNums = usdOne.map(v => parseFloat(v.replace(/[^0-9.]/g, '')));
+      for (let i = 1; i < usdNums.length; i++) {
+        if (usdNums[i] < usdNums[i - 1]) {
+          fail(`${lang}: dollar prices are not ascending (${usdOne.join(', ')})`);
+          break;
+        }
+      }
+
+      /* A dollar figure anywhere OUTSIDE .price__usd is a number typed into a
+         translation rather than substituted from config — which is exactly how
+         the currency drifted the last time it changed. The old check banned the
+         dollar outright; this one fences it. */
+      const loose = await page.evaluate(() => {
+        const priced = [...document.querySelectorAll('.price__usd')];
+        const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        const hits = [];
+        for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+          if (!/\$\s?\d/.test(n.nodeValue)) continue;
+          let el = n.parentElement, inside = false;
+          while (el) { if (priced.includes(el)) { inside = true; break; } el = el.parentElement; }
+          if (!inside) hits.push(n.nodeValue.trim().slice(0, 60));
+        }
+        return hits;
+      });
+      if (loose.length)
+        fail(`${lang}: dollar amount outside .price__usd: ${loose.join(' | ')}`);
 
       // the ladder must read low to high: a pricing table that goes 70, 50, 150
       // looks like an oversight even when every figure is right

@@ -1440,8 +1440,12 @@ html[lang="ar"] .quote em, html[lang="ckb"] .quote em {
     grid-row: auto; grid-column: 1;
     flex-direction: row; align-items: baseline; gap: .5rem;
     margin-top: .5rem; text-align: start;
+    flex-wrap: wrap;
   }
   [dir="rtl"] .prow__p { align-items: baseline; }
+  /* the row is "Starting at | 105,000 IQD"; the dollar takes its own line
+     under it, or the two figures run together as one amount */
+  .prow__p .price__usd { flex-basis: 100%; margin-top: .05rem; }
   .prow__p .price__amt { font-size: 1.4rem; }
   .note { flex-direction: column; gap: .85rem; }
   .price__act .btn { flex: 1 1 100%; }
@@ -1466,3 +1470,23 @@ html[lang="ar"] .quote em, html[lang="ckb"] .quote em {
 /* five-digit figures are far wider than "$50" was */
 .price__amt { font-size: clamp(1.5rem, 1rem + 1.5vw, 2.05rem); }
 .prow__p .price__amt { font-size: clamp(1.25rem, 1rem + .7vw, 1.5rem); }
+
+/* ── the second currency ────────────────────────────────────────────────────
+   The dinar is the price; the dollar is the second line, for a reader who does
+   not think in dinars. Deliberately subordinate — mono, small, --fg-3 — so the
+   figure a local customer needs is still the one the eye lands on.
+
+   Deliberately NOT introduced with "=" or "≈" either. The two figures are
+   separately rounded price points, not a conversion of one another (75,000 is
+   $50 at the stated 1:1500, and the card says $49), so any equals sign would
+   make the page state something untrue. _src/config.py carries the arithmetic
+   and the reason. The "Starting at" label above governs both lines. */
+.price__usd {
+  font-family: var(--mono); font-weight: 500;
+  font-size: .8rem; letter-spacing: .01em;
+  color: var(--fg-3); white-space: nowrap;
+}
+/* .price__tag is a baseline flex row — a full basis forces its own line */
+.price__tag .price__usd { flex-basis: 100%; margin-top: -.1rem; }
+.prow__p .price__usd { margin-top: .15rem; }
+.price__more .price__usd { display: block; margin-top: .3rem; }
