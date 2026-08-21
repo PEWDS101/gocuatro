@@ -22,3 +22,8 @@ _audit/
 
 # Python bytecode from _src/build.py
 _src/__pycache__/
+
+# Cloudflare credentials must never be committed, wherever a copy lands
+api-token
+*.token
+.cloudflare/
